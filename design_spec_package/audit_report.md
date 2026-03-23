@@ -3,7 +3,7 @@
 ## Scope
 Marketing-surface audit and refresh for the Intelligence Workspace root experience.
 
-Sentiment goal: `trust`
+Sentiment goal: `trust`, expressed through clarity and spacing rather than a generic blue SaaS palette
 
 Primary conversion action: `Launch Workspace Demo`
 
@@ -19,16 +19,23 @@ Observed problems:
 - Proof existed implicitly in the product shell, but not in a scannable conversion block.
 - The visual hierarchy was product-first rather than conversion-first.
 - The root experience asked users to parse controls before it told them why the product matters.
+- An initial improvement pass drifted too far into generic SaaS styling and weakened the approved field-archive art direction.
 
 ## After
 
-The improved root experience now uses a Z-pattern landing structure:
+The improved root experience now uses a Z-pattern landing structure while preserving the repository's approved dossier language:
 1. Hero headline and value proposition
 2. Repository and product proof grid
 3. Screen-family value cards
 4. Behavior-spine workflow explanation
 5. Embedded live workspace demo
 6. Final CTA band
+
+Art-direction corrections applied:
+- warm operational substrate instead of cool SaaS blue panels
+- amber, orange, cyan, and verified-acid accents used sparingly
+- indexed card tabs, stacked surfaces, and dossier-like panel framing
+- less polished startup spacing, more handled and inspectable materiality
 
 ## Visual Weight Scores
 

@@ -16,7 +16,9 @@ function SectionHeading(props: { eyebrow: string; headline: string; body?: strin
 
   return (
     <div className={centered ? "mx-auto max-w-3xl text-center" : "max-w-3xl"}>
-      <div className="text-[11px] font-medium uppercase tracking-[0.24em] text-[var(--text-muted)]">{eyebrow}</div>
+      <div className="inline-flex items-center gap-3 border-l-2 border-[var(--accent-secondary)] pl-3 text-[11px] font-medium uppercase tracking-[0.24em] text-[var(--text-muted)]">
+        {eyebrow}
+      </div>
       <h2 className="mt-4 text-[var(--display-mid)] font-semibold leading-[0.95] tracking-[-0.05em] text-[var(--text-primary)]">{headline}</h2>
       {body ? <p className="mt-4 text-[var(--body-lg)] leading-8 text-[var(--text-secondary)]">{body}</p> : null}
     </div>
@@ -29,11 +31,11 @@ function Hero(props: { deck: CopyDeck }) {
   return (
     <section className="relative overflow-hidden border-b border-[var(--border-subtle)] bg-[var(--surface-canvas)]">
       <div className="absolute inset-0 opacity-40" style={{ backgroundImage: `url(${signalGridUrl})`, backgroundSize: "min(960px, 100%)", backgroundPosition: "top center" }} />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(120,199,255,0.18),transparent_34%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(209,177,109,0.18),transparent_34%)]" />
 
       <div className="relative mx-auto grid max-w-[var(--container-max)] gap-12 px-5 py-16 md:px-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(420px,0.95fr)] lg:items-center lg:gap-16 lg:px-10 lg:py-24">
         <div>
-          <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border-strong)] bg-[rgba(20,35,49,0.85)] px-4 py-2 text-[11px] uppercase tracking-[0.22em] text-[var(--text-secondary)]">
+          <div className="inline-flex items-center gap-2 rounded-[14px] border border-[var(--border-strong)] bg-[rgba(27,28,22,0.9)] px-4 py-2 text-[11px] uppercase tracking-[0.22em] text-[var(--text-secondary)]">
             <ShieldCheck className="h-4 w-4 text-[var(--accent-verified)]" />
             {deck.hero.eyebrow}
           </div>
@@ -47,14 +49,14 @@ function Hero(props: { deck: CopyDeck }) {
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <a
               href="#workspace-demo"
-              className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full bg-[var(--accent-primary)] px-6 py-3 text-sm font-semibold text-[var(--accent-primary-ink)] shadow-[var(--shadow-soft)] transition hover:translate-y-[-1px] hover:brightness-105"
+              className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-[16px] border border-[rgba(209,177,109,0.55)] bg-[var(--accent-primary)] px-6 py-3 text-sm font-semibold text-[var(--accent-primary-ink)] shadow-[var(--shadow-soft)] transition hover:translate-y-[-1px] hover:brightness-105"
             >
               {deck.hero.primary_cta}
               <ArrowRight className="h-4 w-4" />
             </a>
             <a
               href="https://github.com/augustave/GEOINT-PT/blob/main/prd_intelligence_workspace_screen_family_completion.md"
-              className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full border border-[var(--border-strong)] bg-[rgba(20,35,49,0.8)] px-6 py-3 text-sm font-semibold text-[var(--text-primary)] transition hover:translate-y-[-1px] hover:border-[var(--accent-primary)]"
+              className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-[16px] border border-[var(--border-strong)] bg-[rgba(27,28,22,0.82)] px-6 py-3 text-sm font-semibold text-[var(--text-primary)] transition hover:translate-y-[-1px] hover:border-[var(--accent-primary)]"
             >
               {deck.hero.secondary_cta}
             </a>
@@ -64,7 +66,7 @@ function Hero(props: { deck: CopyDeck }) {
             {deck.hero.supporting_points.map((point) => (
               <div
                 key={point}
-                className="inline-flex min-h-[44px] items-center rounded-full border border-[var(--border-subtle)] bg-[rgba(24,42,58,0.72)] px-4 py-2 text-sm text-[var(--text-secondary)]"
+                className="inline-flex min-h-[44px] items-center rounded-[14px] border border-[var(--border-subtle)] bg-[rgba(32,31,24,0.78)] px-4 py-2 text-sm text-[var(--text-secondary)]"
               >
                 {point}
               </div>
@@ -78,28 +80,31 @@ function Hero(props: { deck: CopyDeck }) {
           transition={{ duration: 0.55, ease: "easeOut" }}
           className="relative"
         >
-          <div className="relative overflow-hidden rounded-[32px] border border-[var(--border-strong)] bg-[linear-gradient(180deg,rgba(20,35,49,0.98),rgba(11,20,29,0.96))] p-5 shadow-[var(--shadow-strong)] lg:p-6">
+          <div className="absolute inset-x-[7%] top-[6%] h-[88%] rotate-[-2deg] rounded-[30px] border border-[var(--border-subtle)] bg-[rgba(27,28,22,0.55)]" />
+          <div className="absolute inset-x-[10%] top-[3%] h-[88%] rotate-[2deg] rounded-[30px] border border-[var(--border-subtle)] bg-[rgba(38,35,24,0.48)]" />
+          <div className="relative overflow-hidden rounded-[32px] border border-[var(--border-strong)] bg-[linear-gradient(180deg,rgba(27,28,22,0.98),rgba(16,16,13,0.96))] p-5 shadow-[var(--shadow-strong)] lg:p-6">
+            <div className="absolute inset-y-0 left-0 w-4 bg-[linear-gradient(180deg,rgba(209,177,109,0.88),rgba(239,143,69,0.72))]" />
             <div className="flex items-center justify-between gap-3 border-b border-[var(--border-subtle)] pb-4">
               <div>
                 <div className="text-[11px] uppercase tracking-[0.24em] text-[var(--text-muted)]">Preview Surface</div>
-                <div className="mt-2 text-2xl font-semibold tracking-[-0.04em] text-[var(--text-primary)]">Conversion-led root, live prototype below</div>
+                <div className="mt-2 text-2xl font-semibold tracking-[-0.04em] text-[var(--text-primary)]">Indexed landing stack, live workspace below</div>
               </div>
-              <div className="rounded-full border border-[var(--border-subtle)] bg-[rgba(8,17,26,0.7)] px-4 py-2 text-[11px] uppercase tracking-[0.22em] text-[var(--accent-secondary)]">
-                Trust-first
+              <div className="rounded-[14px] border border-[var(--border-subtle)] bg-[rgba(17,18,15,0.72)] px-4 py-2 text-[11px] uppercase tracking-[0.22em] text-[var(--accent-secondary)]">
+                Field archive
               </div>
             </div>
 
-            <div className="mt-6 overflow-hidden rounded-[24px] border border-[var(--border-subtle)] bg-[radial-gradient(circle_at_top,rgba(120,199,255,0.16),rgba(8,17,26,0.96)_62%)] p-4">
+            <div className="mt-6 overflow-hidden rounded-[24px] border border-[var(--border-subtle)] bg-[radial-gradient(circle_at_top,rgba(209,177,109,0.14),rgba(17,18,15,0.96)_62%)] p-4">
               <img src={surfaceStackUrl} alt="Preview of synchronized intelligence surfaces" className="h-auto w-full rounded-[20px] border border-[var(--border-subtle)]" />
             </div>
 
             <div className="mt-5 grid gap-3 sm:grid-cols-3">
               {[
                 { label: "Primary CTA", value: deck.hero.primary_cta },
-                { label: "Sentiment", value: deck.sentiment_goal },
+                { label: "Signal", value: "Scarce" },
                 { label: "Layout", value: "Z-pattern" },
               ].map((item) => (
-                <div key={item.label} className="rounded-[20px] border border-[var(--border-subtle)] bg-[rgba(8,17,26,0.72)] p-4">
+                <div key={item.label} className="rounded-[18px] border border-[var(--border-subtle)] bg-[rgba(17,18,15,0.72)] p-4">
                   <div className="text-[11px] uppercase tracking-[0.22em] text-[var(--text-muted)]">{item.label}</div>
                   <div className="mt-2 text-base font-semibold text-[var(--text-primary)]">{item.value}</div>
                 </div>
@@ -129,12 +134,12 @@ export default function MarketingHomepage() {
             <div className="mt-1 text-base font-semibold text-[var(--text-primary)]">Field-Archive Geo-Intelligence Prototype</div>
           </div>
           <div className="flex flex-wrap items-center gap-3">
-            <a href="#workspace-demo" className="inline-flex min-h-[44px] items-center rounded-full border border-[var(--border-strong)] px-4 py-2 text-sm text-[var(--text-secondary)] transition hover:border-[var(--accent-primary)] hover:text-[var(--text-primary)]">
+            <a href="#workspace-demo" className="inline-flex min-h-[44px] items-center rounded-[14px] border border-[var(--border-strong)] bg-[rgba(27,28,22,0.72)] px-4 py-2 text-sm text-[var(--text-secondary)] transition hover:border-[var(--accent-primary)] hover:text-[var(--text-primary)]">
               Launch Workspace Demo
             </a>
             <a
               href="https://github.com/augustave/GEOINT-PT"
-              className="inline-flex min-h-[44px] items-center rounded-full bg-[var(--accent-primary)] px-4 py-2 text-sm font-semibold text-[var(--accent-primary-ink)] transition hover:translate-y-[-1px]"
+              className="inline-flex min-h-[44px] items-center rounded-[14px] bg-[var(--accent-primary)] px-4 py-2 text-sm font-semibold text-[var(--accent-primary-ink)] transition hover:translate-y-[-1px]"
             >
               Open GitHub Repository
             </a>
@@ -155,8 +160,9 @@ export default function MarketingHomepage() {
                   initial={{ opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.3 }}
-                  className="rounded-[26px] border border-[var(--border-subtle)] bg-[linear-gradient(180deg,rgba(20,35,49,0.96),rgba(15,26,36,0.94))] p-6 shadow-[var(--shadow-soft)]"
+                  className="relative rounded-[26px] border border-[var(--border-subtle)] bg-[linear-gradient(180deg,rgba(27,28,22,0.96),rgba(17,18,15,0.94))] p-6 shadow-[var(--shadow-soft)]"
                 >
+                  <div className="absolute right-5 top-0 h-4 w-16 rounded-b-[10px] border-x border-b border-[var(--border-strong)] bg-[rgba(209,177,109,0.16)]" />
                   <div className="text-[11px] uppercase tracking-[0.22em] text-[var(--text-muted)]">{card.label}</div>
                   <div className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-[var(--text-primary)]">{card.value}</div>
                   <p className="mt-4 text-sm leading-7 text-[var(--text-secondary)]">{card.body}</p>
@@ -177,9 +183,10 @@ export default function MarketingHomepage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.25 }}
                   transition={{ delay: index * 0.04 }}
-                  className="rounded-[24px] border border-[var(--border-subtle)] bg-[rgba(8,17,26,0.7)] p-5"
+                  className="relative rounded-[24px] border border-[var(--border-subtle)] bg-[rgba(32,31,24,0.76)] p-5"
                 >
-                  <div className="inline-flex h-11 min-w-[44px] items-center justify-center rounded-full border border-[var(--border-strong)] bg-[rgba(120,199,255,0.14)] px-4 text-sm font-semibold text-[var(--accent-primary)]">
+                  <div className="absolute right-5 top-0 h-4 w-14 rounded-b-[10px] border-x border-b border-[var(--border-strong)] bg-[rgba(95,200,216,0.12)]" />
+                  <div className="inline-flex h-11 min-w-[44px] items-center justify-center rounded-[14px] border border-[var(--border-strong)] bg-[rgba(209,177,109,0.12)] px-4 text-sm font-semibold text-[var(--accent-primary)]">
                     0{index + 1}
                   </div>
                   <h3 className="mt-5 text-[var(--display-small)] font-semibold tracking-[-0.04em] text-[var(--text-primary)]">{item.title}</h3>
@@ -196,7 +203,7 @@ export default function MarketingHomepage() {
 
             <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
               {workflowSteps.map((step, index) => (
-                <div key={step} className="rounded-[24px] border border-[var(--border-subtle)] bg-[rgba(8,17,26,0.72)] p-5">
+                <div key={step} className="rounded-[24px] border border-[var(--border-subtle)] bg-[rgba(27,28,22,0.78)] p-5">
                   <div className="flex items-center gap-3 text-[var(--accent-verified)]">
                     <CheckCircle2 className="h-5 w-5" />
                     <span className="text-[11px] uppercase tracking-[0.22em] text-[var(--text-muted)]">Step 0{index + 1}</span>
@@ -214,7 +221,7 @@ export default function MarketingHomepage() {
               <SectionHeading eyebrow={copyDeck.demo_section.eyebrow} headline={copyDeck.demo_section.headline} body={copyDeck.demo_section.body} />
               <a
                 href="https://github.com/augustave/GEOINT-PT"
-                className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full border border-[var(--border-strong)] bg-[rgba(20,35,49,0.78)] px-6 py-3 text-sm font-semibold text-[var(--text-primary)] transition hover:border-[var(--accent-primary)]"
+                className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-[16px] border border-[var(--border-strong)] bg-[rgba(27,28,22,0.78)] px-6 py-3 text-sm font-semibold text-[var(--text-primary)] transition hover:border-[var(--accent-primary)]"
               >
                 {copyDeck.demo_section.primary_cta}
                 <ArrowRight className="h-4 w-4" />
@@ -233,13 +240,13 @@ export default function MarketingHomepage() {
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <a
                 href="https://github.com/augustave/GEOINT-PT"
-                className="inline-flex min-h-[52px] items-center justify-center rounded-full bg-[var(--accent-primary)] px-6 py-3 text-sm font-semibold text-[var(--accent-primary-ink)] transition hover:translate-y-[-1px]"
+                className="inline-flex min-h-[52px] items-center justify-center rounded-[16px] bg-[var(--accent-primary)] px-6 py-3 text-sm font-semibold text-[var(--accent-primary-ink)] transition hover:translate-y-[-1px]"
               >
                 {copyDeck.final_cta.primary_cta}
               </a>
               <a
                 href="https://github.com/augustave/GEOINT-PT/blob/main/prd_intelligence_workspace_screen_family_completion.md"
-                className="inline-flex min-h-[52px] items-center justify-center rounded-full border border-[var(--border-strong)] px-6 py-3 text-sm font-semibold text-[var(--text-primary)] transition hover:border-[var(--accent-primary)]"
+                className="inline-flex min-h-[52px] items-center justify-center rounded-[16px] border border-[var(--border-strong)] px-6 py-3 text-sm font-semibold text-[var(--text-primary)] transition hover:border-[var(--accent-primary)]"
               >
                 {copyDeck.final_cta.secondary_cta}
               </a>

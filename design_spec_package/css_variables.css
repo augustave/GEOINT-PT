@@ -1,24 +1,25 @@
 :root {
-  --surface-canvas: #08111a;
-  --surface-base: #0f1a24;
-  --surface-panel: #142331;
-  --surface-panel-alt: #182a3a;
-  --surface-elevated: #1d3142;
-  --surface-glow: rgba(120, 199, 255, 0.12);
-  --surface-glow-strong: rgba(120, 199, 255, 0.2);
+  --surface-canvas: #11120f;
+  --surface-base: #161713;
+  --surface-panel: #1b1c16;
+  --surface-panel-alt: #201f18;
+  --surface-elevated: #262318;
+  --surface-paper: #222018;
+  --surface-glow: rgba(209, 177, 109, 0.12);
+  --surface-glow-strong: rgba(209, 177, 109, 0.18);
 
-  --border-subtle: #2b4153;
-  --border-strong: #3f5d75;
+  --border-subtle: #34362d;
+  --border-strong: #4b4d43;
 
-  --text-primary: #f2f6f9;
-  --text-secondary: #c4d0d9;
-  --text-muted: #8ca0af;
+  --text-primary: #f0ece3;
+  --text-secondary: #cbc4b6;
+  --text-muted: #908977;
 
-  --accent-primary: #78c7ff;
-  --accent-primary-ink: #03263d;
-  --accent-secondary: #e0bc71;
-  --accent-alert: #f08f59;
-  --accent-verified: #63d0c5;
+  --accent-primary: #d1b16d;
+  --accent-primary-ink: #2a1d12;
+  --accent-secondary: #5fc8d8;
+  --accent-alert: #ef8f45;
+  --accent-verified: #d6dd7b;
 
   --font-display: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-body: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -49,8 +50,8 @@
   --radius-xl: 2rem;
   --radius-pill: 999px;
 
-  --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.25);
-  --shadow-strong: 0 30px 90px rgba(0, 0, 0, 0.42);
+  --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.28);
+  --shadow-strong: 0 30px 90px rgba(0, 0, 0, 0.46);
 
   --container-max: 1280px;
 }
