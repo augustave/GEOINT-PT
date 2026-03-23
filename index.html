@@ -44,6 +44,10 @@
         text-decoration: none;
       }
 
+      html {
+        scroll-behavior: smooth;
+      }
+
       .shell {
         width: min(1380px, calc(100vw - 32px));
         margin: 24px auto;
@@ -79,6 +83,14 @@
         background: #181914;
         color: var(--muted);
         font-size: 20px;
+        transition: border-color 160ms ease, background 160ms ease, color 160ms ease, transform 160ms ease;
+      }
+
+      .rail-badge:hover {
+        border-color: #4b4d43;
+        background: #20211b;
+        color: var(--text);
+        transform: translateY(-1px);
       }
 
       .rail-badge.active {
@@ -148,7 +160,17 @@
       }
 
       .status-card {
+        display: block;
         padding: 14px 16px;
+        transition: border-color 160ms ease, transform 160ms ease, background 160ms ease;
+      }
+
+      .status-card:hover,
+      .support-card:hover,
+      .detail-panel:hover {
+        border-color: #4b4d43;
+        background: #20211b;
+        transform: translateY(-1px);
       }
 
       .status-card strong {
@@ -170,9 +192,22 @@
         transition: border-color 160ms ease, transform 160ms ease, background 160ms ease;
       }
 
+      .support-card,
+      .mini-stat,
+      .map-card {
+        display: block;
+      }
+
       .artifact-card:hover {
         border-color: #4b4d43;
         background: #20211b;
+        transform: translateY(-1px);
+      }
+
+      .mini-stat:hover,
+      .map-card:hover {
+        border-color: #4b4d43;
+        background: rgba(32, 33, 27, 0.95);
         transform: translateY(-1px);
       }
 
@@ -253,6 +288,8 @@
       }
 
       .action-chip {
+        display: inline-flex;
+        align-items: center;
         padding: 10px 14px;
         border-radius: 14px;
         border: 1px solid #3d3f36;
@@ -261,6 +298,13 @@
         font-size: 12px;
         letter-spacing: 0.06em;
         text-transform: uppercase;
+        transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+      }
+
+      .action-chip:hover {
+        border-color: #5a5d50;
+        background: rgba(33, 34, 27, 0.95);
+        transform: translateY(-1px);
       }
 
       .surface-main {
@@ -282,11 +326,26 @@
         position: relative;
       }
 
+      .hero-layout {
+        position: relative;
+        z-index: 1;
+        min-height: 476px;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        gap: 18px;
+      }
+
+      .hero-backdrop {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+      }
+
       .map-ellipse,
       .map-ring,
       .map-dot,
-      .map-route,
-      .map-card {
+      .map-route {
         position: absolute;
       }
 
@@ -347,9 +406,9 @@
       }
 
       .map-card {
-        left: 24px;
-        top: 24px;
-        width: min(360px, calc(100% - 48px));
+        position: relative;
+        z-index: 2;
+        width: min(480px, 100%);
         padding: 16px;
         border-radius: 22px;
         border: 1px solid #45463d;
@@ -381,7 +440,9 @@
       }
 
       .mini-stats {
-        margin-top: 18px;
+        position: relative;
+        z-index: 2;
+        align-self: end;
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 12px;
@@ -405,6 +466,7 @@
       }
 
       .detail-panel {
+        display: block;
         padding: 16px;
         background: rgba(25, 26, 21, 0.95);
       }
@@ -483,6 +545,10 @@
         .support-grid {
           grid-template-columns: 1fr;
         }
+
+        .hero-layout {
+          min-height: 420px;
+        }
       }
 
       @media (max-width: 720px) {
@@ -505,6 +571,10 @@
         .surface-card {
           min-height: 420px;
         }
+
+        .hero-layout {
+          min-height: 360px;
+        }
       }
     </style>
   </head>
@@ -512,15 +582,15 @@
     <div class="shell">
       <div class="grid">
         <aside class="rail" aria-label="Workspace rail">
-          <div class="rail-badge active">◎</div>
-          <div class="rail-badge">△</div>
-          <div class="rail-badge">↗</div>
-          <div class="rail-badge">▣</div>
-          <div class="rail-badge">≣</div>
+          <a class="rail-badge active" href="#top" aria-label="Jump to top">◎</a>
+          <a class="rail-badge" href="#artifacts" aria-label="Jump to artifacts">△</a>
+          <a class="rail-badge" href="#surface" aria-label="Jump to surface">↗</a>
+          <a class="rail-badge" href="#references" aria-label="Jump to references">▣</a>
+          <a class="rail-badge" href="#repo" aria-label="Open GitHub repository">≣</a>
           <div class="rail-footer">Geo Core Live</div>
         </aside>
 
-        <aside class="index">
+        <aside class="index" id="top">
           <div class="eyebrow">Field Archive / Operational Index</div>
           <div class="title">GEOINT-PT</div>
           <p class="lede">
@@ -530,19 +600,19 @@
           </p>
 
           <div class="status">
-            <div class="status-card">
+            <a class="status-card" href="https://github.com/augustave/GEOINT-PT">
               <div class="card-meta">Current State</div>
               <strong>Prototype handoff repository</strong>
               <p>The repo currently contains design docs, prototype JSX artifacts, and TypeScript helper packs.</p>
-            </div>
-            <div class="status-card">
+            </a>
+            <a class="status-card" href="https://skill-deploy-9rfn6if42n-codex-agent-deploys.vercel.app">
               <div class="card-meta">Deployment</div>
               <strong>Static landing page</strong>
               <p>This root URL is intentionally lightweight so the project can be shared while the app shell is still under construction.</p>
-            </div>
+            </a>
           </div>
 
-          <div class="artifact-list">
+          <div class="artifact-list" id="artifacts">
             <a class="artifact-card" href="https://github.com/augustave/GEOINT-PT/blob/main/prd_intelligence_workspace_screen_family_completion.md">
               <span class="artifact-pill">Primary Handoff</span>
               <h3>Intelligence Workspace Completion PRD</h3>
@@ -569,7 +639,7 @@
           </div>
         </aside>
 
-        <main class="surface">
+        <main class="surface" id="surface">
           <div class="surface-inner">
             <div class="surface-head">
               <div>
@@ -577,68 +647,74 @@
                 <h2>Deployable Project Root</h2>
               </div>
               <div class="head-actions">
-                <div class="action-chip">5 screen families</div>
-                <div class="action-chip">bbox-driven logic</div>
-                <div class="action-chip">handoff ready</div>
+                <a class="action-chip" href="https://github.com/augustave/GEOINT-PT/blob/main/prd_intelligence_workspace_screen_family_completion.md">5 screen families</a>
+                <a class="action-chip" href="https://github.com/augustave/GEOINT-PT/blob/main/geo_intelligence_core.ts">bbox-driven logic</a>
+                <a class="action-chip" href="https://github.com/augustave/GEOINT-PT">handoff ready</a>
               </div>
             </div>
 
             <div class="surface-main">
               <section class="surface-card hero" aria-label="Project overview">
-                <div class="map-ellipse"></div>
-                <div class="map-route"></div>
-                <div class="map-ring"></div>
-                <div class="map-dot cyan"></div>
-                <div class="map-dot gold"></div>
-                <div class="map-dot orange"></div>
-
-                <div class="map-card">
-                  <div class="section-label">Linked Selection</div>
-                  <h3>Intelligence Workspace</h3>
-                  <p>
-                    The current repo is a handoff package, not a finished product build. The live
-                    app surface is represented here as a field-archive landing page that routes
-                    directly into the source artifacts needed for the next coding cycle.
-                  </p>
-                  <div class="chip-row">
-                    <span class="chip">flat-map</span>
-                    <span class="chip">eo-overlay</span>
-                    <span class="chip">site-3d</span>
-                    <span class="chip">theater-3d</span>
-                    <span class="chip">ops-wall</span>
-                  </div>
+                <div class="hero-backdrop" aria-hidden="true">
+                  <div class="map-ellipse"></div>
+                  <div class="map-route"></div>
+                  <div class="map-ring"></div>
+                  <div class="map-dot cyan"></div>
+                  <div class="map-dot gold"></div>
+                  <div class="map-dot orange"></div>
                 </div>
 
-                <div class="mini-stats">
-                  <div class="mini-stat">
-                    <div class="section-label">Artifacts</div>
-                    <strong>10</strong>
-                    <p>Repository files currently tracked in the initial handoff commit.</p>
-                  </div>
-                  <div class="mini-stat">
-                    <div class="section-label">Priority</div>
-                    <strong>Repair</strong>
-                    <p>Restore the truncated workspace shell before deeper refactor work.</p>
-                  </div>
-                  <div class="mini-stat">
-                    <div class="section-label">Continuity</div>
-                    <strong>Active</strong>
-                    <p>Selection, compare, and geometry truth are the constraints to preserve.</p>
+                <div class="hero-layout">
+                  <a class="map-card" href="https://github.com/augustave/GEOINT-PT/blob/main/prd_intelligence_workspace_screen_family_completion.md">
+                    <div class="section-label">Linked Selection</div>
+                    <h3>Intelligence Workspace</h3>
+                    <p>
+                      The current repo is a handoff package, not a finished product build. The live
+                      app surface is represented here as a field-archive landing page that routes
+                      directly into the source artifacts needed for the next coding cycle.
+                    </p>
+                    <div class="chip-row">
+                      <span class="chip">flat-map</span>
+                      <span class="chip">eo-overlay</span>
+                      <span class="chip">site-3d</span>
+                      <span class="chip">theater-3d</span>
+                      <span class="chip">ops-wall</span>
+                    </div>
+                  </a>
+
+                  <div></div>
+
+                  <div class="mini-stats">
+                    <a class="mini-stat" href="#artifacts">
+                      <div class="section-label">Artifacts</div>
+                      <strong>10</strong>
+                      <p>Repository files currently tracked in the initial handoff commit.</p>
+                    </a>
+                    <a class="mini-stat" href="https://github.com/augustave/GEOINT-PT/blob/main/prd_intelligence_workspace_screen_family_completion.md">
+                      <div class="section-label">Priority</div>
+                      <strong>Repair</strong>
+                      <p>Restore the truncated workspace shell before deeper refactor work.</p>
+                    </a>
+                    <a class="mini-stat" href="https://github.com/augustave/GEOINT-PT/blob/main/semantic_contracts_pack.ts">
+                      <div class="section-label">Continuity</div>
+                      <strong>Active</strong>
+                      <p>Selection, compare, and geometry truth are the constraints to preserve.</p>
+                    </a>
                   </div>
                 </div>
               </section>
 
-              <aside class="detail-column" aria-label="Detail panels">
-                <div class="detail-panel">
+              <aside class="detail-column" aria-label="Detail panels" id="references">
+                <a class="detail-panel" href="https://skill-deploy-9rfn6if42n-codex-agent-deploys.vercel.app">
                   <div class="section-label">Dossier Detail</div>
                   <h3>Current Deployable Scope</h3>
                   <p>
                     This deploy establishes a stable root URL for the repo. It does not attempt to
                     compile the interrupted React prototype yet.
                   </p>
-                </div>
+                </a>
 
-                <div class="detail-panel">
+                <a class="detail-panel" href="https://github.com/augustave/GEOINT-PT/blob/main/semantic_contracts_pack.ts">
                   <div class="section-label">Core References</div>
                   <div class="detail-grid">
                     <div class="mini-stat">
@@ -658,16 +734,16 @@
                       <strong>Live</strong>
                     </div>
                   </div>
-                </div>
+                </a>
 
-                <div class="detail-panel">
+                <a class="detail-panel" href="https://github.com/augustave/GEOINT-PT/blob/main/prd_intelligence_workspace_screen_family_completion.md">
                   <div class="section-label">Next Move</div>
                   <p>
                     Use the PRD and helper files to rebuild the workspace shell, restore the right
                     detail pane, and then extract screen-family modules without breaking bbox-driven
                     rendering behavior.
                   </p>
-                </div>
+                </a>
               </aside>
             </div>
 
@@ -693,7 +769,7 @@
                 <span class="support-link">Open artifact →</span>
               </a>
 
-              <a class="support-card" href="https://github.com/augustave/GEOINT-PT">
+              <a class="support-card" href="https://github.com/augustave/GEOINT-PT" id="repo">
                 <div class="section-label">Repository</div>
                 <h3>GitHub Source</h3>
                 <p>Browse the full repository, commit history, and raw source files on GitHub.</p>
