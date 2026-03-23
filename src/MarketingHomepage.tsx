@@ -342,7 +342,7 @@ export default function MarketingHomepage() {
 
         <section id="workspace-access" className="border-b border-[var(--border-subtle)] bg-[var(--surface-canvas)]">
           <div className="mx-auto max-w-[var(--container-max)] px-5 py-16 md:px-8 lg:px-10 lg:py-20">
-            <div className="grid gap-6 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1.12fr)] lg:items-center">
+            <div className="grid gap-6 lg:grid-cols-[minmax(0,0.86fr)_minmax(0,1.14fr)] lg:items-center">
               <motion.div variants={sectionFade} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }}>
                 <SectionHeading eyebrow={copyDeck.demo_section.eyebrow} headline="Enter the operational shell on its own route." body="The live workspace is no longer nested inside the marketing grid. Launching the shell now opens the full three-column application container with persistent selection, compare, extent, and dossier continuity." />
                 <div className="mt-6 flex flex-col gap-3 sm:flex-row">
@@ -374,10 +374,10 @@ export default function MarketingHomepage() {
                       Separate route
                     </div>
                   </div>
-                  <div className="mt-6 grid min-h-[320px] gap-3 lg:grid-cols-[22%_54%_24%]">
-                    <div className="rounded-[18px] border border-[var(--border-subtle)] bg-[rgba(17,18,15,0.72)] p-4">
+                  <div className="mt-6 grid gap-3 lg:grid-cols-[220px_minmax(0,1fr)_220px] lg:items-start xl:grid-cols-[240px_minmax(0,1fr)_240px]">
+                    <div className="grid content-start gap-3 self-start rounded-[18px] border border-[var(--border-subtle)] bg-[rgba(17,18,15,0.72)] p-4">
                       <div className="text-[11px] uppercase tracking-[0.22em] text-[var(--text-muted)]">Left Rail</div>
-                      <div className="mt-3 space-y-2">
+                      <div className="space-y-2">
                         {["Screen Families", "Search", "Active Layers", "Operational Index"].map((item) => (
                           <div key={item} className="rounded-[12px] border border-[var(--border-subtle)] bg-[rgba(32,31,24,0.62)] px-3 py-2 text-sm text-[var(--text-secondary)]">
                             {item}
@@ -385,10 +385,10 @@ export default function MarketingHomepage() {
                         ))}
                       </div>
                     </div>
-                    <div className="rounded-[18px] border border-[var(--border-subtle)] bg-[rgba(17,18,15,0.72)] p-4">
+                    <div className="self-start rounded-[18px] border border-[var(--border-subtle)] bg-[rgba(17,18,15,0.72)] p-4">
                       <div className="text-[11px] uppercase tracking-[0.22em] text-[var(--text-muted)]">Main Surface</div>
-                      <div className="mt-3 overflow-hidden rounded-[14px] border border-[var(--border-subtle)]">
-                        <img src={surfaceStackUrl} alt="Operational shell preview" className="h-auto w-full" />
+                      <div className="mt-3 aspect-[4/3] overflow-hidden rounded-[14px] border border-[var(--border-subtle)]">
+                        <img src={surfaceStackUrl} alt="Operational shell preview" className="h-full w-full object-cover object-center" />
                       </div>
                       <div className="mt-3 flex flex-wrap gap-2">
                         {["Scope", "BBox", "Selection", "Compare"].map((item) => (
@@ -398,9 +398,9 @@ export default function MarketingHomepage() {
                         ))}
                       </div>
                     </div>
-                    <div className="rounded-[18px] border border-[var(--border-subtle)] bg-[rgba(17,18,15,0.72)] p-4">
+                    <div className="grid content-start gap-3 self-start rounded-[18px] border border-[var(--border-subtle)] bg-[rgba(17,18,15,0.72)] p-4">
                       <div className="text-[11px] uppercase tracking-[0.22em] text-[var(--text-muted)]">Dossier</div>
-                      <div className="mt-3 space-y-2">
+                      <div className="space-y-2">
                         {["Metadata", "Summary", "Evidence", "Compare Queue"].map((item) => (
                           <div key={item} className="rounded-[12px] border border-[var(--border-subtle)] bg-[rgba(32,31,24,0.62)] px-3 py-2 text-sm text-[var(--text-secondary)]">
                             {item}

@@ -56,9 +56,9 @@ export function WorkspaceShell(props: WorkspaceShellProps) {
 
   return (
     <div className="min-h-screen bg-[#11120f] text-zinc-100">
-      <div className="mx-auto min-h-screen w-full max-w-[1720px] p-3 md:p-4">
+      <div className="mx-auto min-h-screen w-full max-w-[1760px] p-3 md:p-4">
         <div className="overflow-hidden rounded-shell border border-zinc-800 bg-[#161713] shadow-workspace-xl">
-          <div className="grid min-h-[100vh] grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)_320px] xl:grid-cols-[22%_minmax(0,54%)_24%]">
+          <div className="grid min-h-[100vh] grid-cols-1 gap-0 lg:items-start lg:grid-cols-[280px_minmax(0,1fr)_320px] xl:grid-cols-[minmax(288px,22vw)_minmax(0,1fr)_minmax(320px,24vw)] 2xl:grid-cols-[320px_minmax(0,1fr)_360px]">
             <aside className="order-1 flex min-w-0 flex-col gap-3 border-b border-zinc-800 bg-[#181914] p-3 lg:border-b-0 lg:border-r">
               <div className="flex flex-wrap items-start gap-2 border-b border-zinc-800 pb-3">
                 <div className="flex flex-1 flex-wrap gap-1.5">
@@ -88,7 +88,7 @@ export function WorkspaceShell(props: WorkspaceShellProps) {
                 <div className="mt-0.5 text-label text-zinc-400">Product shell for shared object identity across five screen families.</div>
               </div>
 
-              <SurfaceCard className="min-h-[220px]">
+              <SurfaceCard className="min-h-0">
                 <div className="mb-3 flex items-center justify-between">
                   <div className="flex items-center gap-1.5 text-label text-zinc-200">
                     <Monitor className="h-3.5 w-3.5 text-[#d1b16d]" /> Screen Families
@@ -118,7 +118,7 @@ export function WorkspaceShell(props: WorkspaceShellProps) {
                               <div className="text-meta-sm uppercase text-zinc-500">{spec.compareRole}</div>
                             </div>
                             <div className="mt-1 text-label text-zinc-400">{spec.role}</div>
-                            <div className="mt-2 text-body-sm leading-5 text-zinc-300">{spec.behaviorSummary}</div>
+                            <div className="mt-2 text-[12px] leading-4 text-zinc-300">{spec.behaviorSummary}</div>
                             <div className="mt-2 flex flex-wrap gap-1">
                               {WORKSPACE_INVARIANTS.map((invariant) => (
                                 <span key={invariant} className="rounded-full border border-zinc-700 bg-[#141510] px-2 py-0.5 text-meta-xs uppercase text-zinc-300">
@@ -135,7 +135,7 @@ export function WorkspaceShell(props: WorkspaceShellProps) {
               </SurfaceCard>
 
               <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-1">
-                <DossierCard className="min-h-[120px]">
+                <DossierCard className="min-h-[96px]">
                   <div className="mb-2 flex items-center justify-between">
                     <div className="text-label text-zinc-200">Search</div>
                     <div className={CLS.meta}>Object</div>
@@ -151,7 +151,7 @@ export function WorkspaceShell(props: WorkspaceShellProps) {
                   </div>
                 </DossierCard>
 
-                <DossierCard className="min-h-[120px]">
+                <DossierCard className="min-h-[96px]">
                   <div className="mb-2 flex items-center justify-between">
                     <div className="text-label text-zinc-200">Active Layers</div>
                     <div className={CLS.meta}>Scope</div>
@@ -178,12 +178,12 @@ export function WorkspaceShell(props: WorkspaceShellProps) {
                 </DossierCard>
               </div>
 
-              <DossierCard className="min-h-[88px]">
+              <DossierCard className="min-h-[88px] lg:flex-1">
                 <div className="mb-2 flex items-center justify-between">
                   <div className="text-label text-zinc-200">Operational Index</div>
                   <div className={CLS.meta}>{dossierCards.length} visible</div>
                 </div>
-                <div className="space-y-1.5 overflow-auto pr-1 xl:max-h-[calc(100vh-540px)]">
+                <div className="space-y-1.5 overflow-auto pr-1 lg:max-h-[420px] xl:max-h-[520px] 2xl:max-h-[600px]">
                   {dossierCards.map((feature) => {
                     const selected = feature.properties.id === selectedFeature.properties.id;
                     const compared = comparedIds.includes(feature.properties.id);
@@ -268,7 +268,7 @@ export function WorkspaceShell(props: WorkspaceShellProps) {
                 </DossierCard>
               </div>
 
-              <div className="relative min-h-[560px] flex-1 overflow-hidden">
+              <div className="relative min-h-[520px] overflow-hidden lg:min-h-[600px] xl:min-h-[660px] 2xl:min-h-[720px]">
                 {renderMainSurface()}
               </div>
 
