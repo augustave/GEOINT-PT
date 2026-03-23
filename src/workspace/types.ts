@@ -7,6 +7,11 @@ export type Freshness = "recent" | "aging" | "stale";
 export type OperationalState = "default" | "active" | "selected" | "alert" | "stale";
 export type WorkspaceMode = "flat-map" | "eo-overlay" | "site-3d" | "theater-3d" | "ops-wall";
 export type ExtentMode = "operational" | "selection" | "compare";
+export type ShellTemplate = "map" | "scene" | "ops-wall";
+export type DetailMode = "persistent-dossier" | "floating-intel-card" | "contextual-modules";
+export type TopBarVariant = "map-scope" | "tasking" | "command-wall";
+export type ToolRailVariant = "full-index" | "thin-instruments" | "wall-modules";
+export type SceneDominance = "medium" | "high" | "maximum";
 
 export type Geometry =
   | { type: "Point"; coordinates: Position }
@@ -57,6 +62,11 @@ export interface ScreenFamilySpec {
   selectionPersistence: "strong";
   compareRole: "strong" | "medium" | "summary";
   behaviorSummary: string;
+  shellTemplate: ShellTemplate;
+  detailMode: DetailMode;
+  topBarVariant: TopBarVariant;
+  toolRailVariant: ToolRailVariant;
+  sceneDominance: SceneDominance;
 }
 
 export interface SurfaceViewProps {
