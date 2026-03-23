@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 :root {
-  color: #ece8de;
+  color: var(--text-primary);
   background:
-    radial-gradient(circle at top, rgba(209, 177, 109, 0.12), transparent 34%),
-    linear-gradient(180deg, #151611 0%, #0f100d 100%);
-  font-family: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    radial-gradient(circle at top, var(--surface-glow), transparent 34%),
+    linear-gradient(180deg, var(--surface-canvas) 0%, #060d14 100%);
+  font-family: var(--font-body);
 }
 
 html {
@@ -27,4 +27,9 @@ body {
 button,
 input {
   font: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
 }

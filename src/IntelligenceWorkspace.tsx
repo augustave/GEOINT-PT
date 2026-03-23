@@ -857,9 +857,9 @@ export default function IntelligenceWorkspace() {
   };
 
   return (
-    <div className="min-h-screen bg-[#11120f] p-4 text-zinc-100 md:p-6">
+    <div className="bg-[#11120f] p-4 text-zinc-100 md:p-6">
       <div className="mx-auto max-w-[1620px] overflow-hidden rounded-[30px] border border-zinc-800 bg-[#161713] shadow-workspace-xl">
-        <div className="grid min-h-screen grid-cols-1 xl:grid-cols-[94px_360px_minmax(0,1fr)_400px]">
+        <div className="grid min-h-[900px] grid-cols-1 xl:grid-cols-[94px_360px_minmax(0,1fr)_400px]">
           <aside className="flex gap-3 border-b border-zinc-800 bg-[#12130f] p-3 xl:flex-col xl:gap-2 xl:border-b-0 xl:border-r">
             {[MapPinned, AlertTriangle, Route, FileText, Layers3].map((Icon, index) => (
               <button

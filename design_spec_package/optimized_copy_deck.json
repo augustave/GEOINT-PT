@@ -1,0 +1,89 @@
+{
+  "sentiment_goal": "trust",
+  "primary_conversion_action": "Launch Workspace Demo",
+  "hero": {
+    "eyebrow": "Field-Archive Geo-Intelligence Prototype",
+    "headline": "One object, many surfaces, one operational identity.",
+    "body": "Intelligence Workspace keeps selection, compare, and geometry truth aligned across flat map, EO overlay, site 3D, theater 3D, and ops wall views.",
+    "primary_cta": "Launch Workspace Demo",
+    "secondary_cta": "Review Completion PRD",
+    "supporting_points": [
+      "Five synchronized screen families",
+      "BBox-driven extent logic",
+      "Right-side dossier continuity"
+    ]
+  },
+  "proof": {
+    "eyebrow": "Operational Proof",
+    "headline": "Built for continuity instead of disconnected screens.",
+    "cards": [
+      {
+        "label": "Screen Families",
+        "value": "5",
+        "body": "Flat map, EO overlay, site 3D, theater 3D, and ops wall all stay inside one workspace model."
+      },
+      {
+        "label": "Selection Spine",
+        "value": "Shared",
+        "body": "Selection, compare, and extent state remain centralized instead of being re-invented per surface."
+      },
+      {
+        "label": "Geometry Truth",
+        "value": "Active",
+        "body": "Bounding boxes, projection helpers, and sampled range rings still drive the spatial framing logic."
+      },
+      {
+        "label": "Build Status",
+        "value": "Passing",
+        "body": "The current repository ships as a runnable Vite and React prototype instead of a dead handoff page."
+      }
+    ]
+  },
+  "feature_section": {
+    "eyebrow": "Screen Families",
+    "headline": "Each surface answers a different operational question without breaking identity.",
+    "items": [
+      {
+        "title": "Flat Map",
+        "body": "Truth surface for point, line, and polygon context with bbox-based framing."
+      },
+      {
+        "title": "EO Overlay",
+        "body": "Exploitation view for markup, aimpoints, directional cues, and measured context."
+      },
+      {
+        "title": "Site 3D",
+        "body": "Local oblique surface for selected-site framing and task-asset context."
+      },
+      {
+        "title": "Theater 3D",
+        "body": "Mission geometry surface for rings, route vectors, and tasking relationships."
+      },
+      {
+        "title": "Ops Wall",
+        "body": "Command-monitoring surface for clocks, queue panels, and central mission awareness."
+      }
+    ]
+  },
+  "workflow_section": {
+    "eyebrow": "Behavior Spine",
+    "headline": "The prototype is strongest where interaction stays coherent.",
+    "steps": [
+      "Select an object once and keep it visible across list, surface, compare, and dossier panes.",
+      "Switch viewing modes without losing the selected object or the active compare queue.",
+      "Change extent mode to reframe by operational, selection, or compare logic using shared bbox math."
+    ]
+  },
+  "demo_section": {
+    "eyebrow": "Live Workspace",
+    "headline": "Explore the current prototype in the same page.",
+    "body": "The interactive workspace below is the actual runnable prototype, not a static mockup.",
+    "primary_cta": "Open GitHub Repository"
+  },
+  "final_cta": {
+    "headline": "Use the current prototype as the base for the next implementation cycle.",
+    "body": "Review the PRD, inspect the source, or launch directly into the live workspace to continue the repair-first roadmap.",
+    "primary_cta": "Open GitHub Repository",
+    "secondary_cta": "Review Completion PRD"
+  }
+}

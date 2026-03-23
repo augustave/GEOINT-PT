@@ -1,5 +1,5 @@
-import IntelligenceWorkspace from "./IntelligenceWorkspace";
+import MarketingHomepage from "./MarketingHomepage";
 
 export default function App() {
-  return <IntelligenceWorkspace />;
+  return <MarketingHomepage />;
 }

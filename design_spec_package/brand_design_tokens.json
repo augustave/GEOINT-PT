@@ -1,0 +1,51 @@
+{
+  "color": {
+    "surface_canvas": "#08111A",
+    "surface_base": "#0F1A24",
+    "surface_panel": "#142331",
+    "surface_panel_alt": "#182A3A",
+    "surface_elevated": "#1D3142",
+    "border_subtle": "#2B4153",
+    "border_strong": "#3F5D75",
+    "text_primary": "#F2F6F9",
+    "text_secondary": "#C4D0D9",
+    "text_muted": "#8CA0AF",
+    "accent_primary": "#78C7FF",
+    "accent_primary_ink": "#03263D",
+    "accent_secondary": "#E0BC71",
+    "accent_alert": "#F08F59",
+    "accent_verified": "#63D0C5"
+  },
+  "type": {
+    "display": "\"IBM Plex Sans\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+    "body": "\"IBM Plex Sans\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+    "mono": "\"IBM Plex Mono\", \"SFMono-Regular\", Consolas, monospace",
+    "display_max": "clamp(3rem, 7vw, 5.5rem)",
+    "display_mid": "clamp(2rem, 4vw, 3.5rem)",
+    "body_size": "1rem",
+    "small_size": "0.875rem"
+  },
+  "spacing": {
+    "2": "0.5rem",
+    "3": "0.75rem",
+    "4": "1rem",
+    "5": "1.25rem",
+    "6": "1.5rem",
+    "8": "2rem",
+    "10": "2.5rem",
+    "12": "3rem",
+    "16": "4rem",
+    "20": "5rem"
+  },
+  "radius": {
+    "sm": "0.75rem",
+    "md": "1rem",
+    "lg": "1.5rem",
+    "xl": "2rem",
+    "pill": "999px"
+  },
+  "shadow": {
+    "soft": "0 18px 45px rgba(0, 0, 0, 0.25)",
+    "strong": "0 30px 90px rgba(0, 0, 0, 0.42)"
+  }
+}
