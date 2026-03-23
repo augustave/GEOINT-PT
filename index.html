@@ -1,0 +1,708 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GEOINT-PT</title>
+    <meta
+      name="description"
+      content="GEOINT-PT project handoff, prototype artifacts, and geospatial intelligence operating-language references."
+    />
+    <style>
+      :root {
+        --bg: #0f100d;
+        --panel: #161713;
+        --panel-2: #1b1c16;
+        --line: #2e3028;
+        --text: #ece8de;
+        --muted: #a49f91;
+        --accent: #d1b16d;
+        --accent-2: #ef8f45;
+        --accent-3: #5fc8d8;
+        --shadow: 0 24px 80px rgba(0, 0, 0, 0.38);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        background:
+          radial-gradient(circle at top, rgba(209, 177, 109, 0.09), transparent 36%),
+          linear-gradient(180deg, #151611 0%, #0f100d 100%);
+        color: var(--text);
+        font-family: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .shell {
+        width: min(1380px, calc(100vw - 32px));
+        margin: 24px auto;
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        overflow: hidden;
+        background: rgba(22, 23, 19, 0.92);
+        box-shadow: var(--shadow);
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 92px minmax(280px, 360px) minmax(0, 1fr);
+        min-height: calc(100vh - 48px);
+      }
+
+      .rail {
+        background: #12130f;
+        border-right: 1px solid var(--line);
+        padding: 16px 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .rail-badge {
+        width: 56px;
+        height: 56px;
+        display: grid;
+        place-items: center;
+        border-radius: 18px;
+        border: 1px solid var(--line);
+        background: #181914;
+        color: var(--muted);
+        font-size: 20px;
+      }
+
+      .rail-badge.active {
+        border-color: rgba(239, 143, 69, 0.45);
+        background: #2a1d12;
+        color: #f2a86b;
+      }
+
+      .rail-footer {
+        margin-top: auto;
+        padding: 12px 10px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: #181914;
+        color: var(--muted);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+      }
+
+      .index {
+        background: #181914;
+        border-right: 1px solid var(--line);
+        padding: 24px 20px;
+      }
+
+      .eyebrow,
+      .card-meta,
+      .section-label,
+      .surface-meta {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        color: var(--muted);
+      }
+
+      .title {
+        margin-top: 10px;
+        font-size: clamp(32px, 4vw, 46px);
+        line-height: 0.95;
+        font-weight: 700;
+        letter-spacing: -0.04em;
+      }
+
+      .lede {
+        margin-top: 12px;
+        color: #c7c2b4;
+        font-size: 15px;
+        line-height: 1.65;
+      }
+
+      .status {
+        margin-top: 18px;
+        display: grid;
+        gap: 10px;
+      }
+
+      .status-card,
+      .artifact-card,
+      .support-card,
+      .detail-panel,
+      .surface-card,
+      .mini-stat {
+        border: 1px solid var(--line);
+        background: var(--panel-2);
+        border-radius: 22px;
+      }
+
+      .status-card {
+        padding: 14px 16px;
+      }
+
+      .status-card strong {
+        display: block;
+        margin-top: 6px;
+        font-size: 14px;
+        color: var(--text);
+      }
+
+      .artifact-list {
+        margin-top: 18px;
+        display: grid;
+        gap: 12px;
+      }
+
+      .artifact-card {
+        display: block;
+        padding: 16px;
+        transition: border-color 160ms ease, transform 160ms ease, background 160ms ease;
+      }
+
+      .artifact-card:hover {
+        border-color: #4b4d43;
+        background: #20211b;
+        transform: translateY(-1px);
+      }
+
+      .artifact-card h3 {
+        margin: 10px 0 6px;
+        font-size: 16px;
+        line-height: 1.3;
+      }
+
+      .artifact-card p,
+      .support-card p,
+      .detail-panel p,
+      .surface-card p {
+        margin: 0;
+        color: #c7c2b4;
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .artifact-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid #3a3c34;
+        color: #d8d2c4;
+        background: #141510;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+      }
+
+      .surface {
+        position: relative;
+        padding: 24px;
+        background:
+          radial-gradient(circle at 50% 15%, rgba(120, 120, 90, 0.14), rgba(10, 10, 10, 0.32) 48%, rgba(10, 10, 10, 0.74) 100%);
+      }
+
+      .surface::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+        background-size: 54px 54px;
+        opacity: 0.18;
+        pointer-events: none;
+      }
+
+      .surface-inner {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        gap: 18px;
+      }
+
+      .surface-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        align-items: start;
+      }
+
+      .surface-head h2 {
+        margin: 8px 0 0;
+        font-size: clamp(28px, 3vw, 40px);
+        line-height: 1;
+        letter-spacing: -0.04em;
+      }
+
+      .head-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .action-chip {
+        padding: 10px 14px;
+        border-radius: 14px;
+        border: 1px solid #3d3f36;
+        background: rgba(25, 26, 20, 0.88);
+        color: #ddd6c9;
+        font-size: 12px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .surface-main {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 320px;
+        gap: 18px;
+      }
+
+      .surface-card {
+        min-height: 520px;
+        padding: 22px;
+        overflow: hidden;
+        background:
+          radial-gradient(circle at center, rgba(255, 255, 255, 0.04), rgba(11, 11, 11, 0.4) 56%, rgba(11, 11, 11, 0.8) 100%),
+          #131410;
+      }
+
+      .surface-card.hero {
+        position: relative;
+      }
+
+      .map-ellipse,
+      .map-ring,
+      .map-dot,
+      .map-route,
+      .map-card {
+        position: absolute;
+      }
+
+      .map-ellipse {
+        inset: 14% 9% 16% 10%;
+        border-radius: 46px;
+        border: 1px solid rgba(209, 177, 109, 0.34);
+        background: rgba(209, 177, 109, 0.07);
+      }
+
+      .map-route {
+        left: 18%;
+        top: 28%;
+        width: 56%;
+        height: 34%;
+        border-top: 2px solid rgba(239, 143, 69, 0.82);
+        border-right: 2px solid rgba(239, 143, 69, 0.82);
+        border-radius: 120px 140px 100px 40px;
+        transform: rotate(10deg);
+        opacity: 0.9;
+      }
+
+      .map-ring {
+        left: 50%;
+        top: 48%;
+        width: 190px;
+        height: 190px;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        border: 1px dashed rgba(209, 177, 109, 0.55);
+      }
+
+      .map-dot {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        border: 2px solid #11120f;
+        box-shadow: 0 0 0 8px rgba(243, 216, 122, 0.1);
+      }
+
+      .map-dot.orange {
+        background: var(--accent-2);
+        left: 62%;
+        top: 42%;
+      }
+
+      .map-dot.cyan {
+        background: var(--accent-3);
+        left: 32%;
+        top: 64%;
+      }
+
+      .map-dot.gold {
+        background: var(--accent);
+        left: 52%;
+        top: 50%;
+      }
+
+      .map-card {
+        left: 24px;
+        top: 24px;
+        width: min(360px, calc(100% - 48px));
+        padding: 16px;
+        border-radius: 22px;
+        border: 1px solid #45463d;
+        background: rgba(23, 24, 18, 0.93);
+        backdrop-filter: blur(12px);
+      }
+
+      .map-card h3 {
+        margin: 8px 0 4px;
+        font-size: 20px;
+      }
+
+      .chip-row {
+        margin-top: 12px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .chip {
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid #3b3d34;
+        background: #1b1c16;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        color: #ddd6c9;
+      }
+
+      .mini-stats {
+        margin-top: 18px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .mini-stat {
+        padding: 14px;
+        background: rgba(23, 24, 18, 0.9);
+      }
+
+      .mini-stat strong {
+        display: block;
+        margin-top: 8px;
+        font-size: 28px;
+        letter-spacing: -0.03em;
+      }
+
+      .detail-column {
+        display: grid;
+        gap: 14px;
+      }
+
+      .detail-panel {
+        padding: 16px;
+        background: rgba(25, 26, 21, 0.95);
+      }
+
+      .detail-panel h3 {
+        margin: 8px 0 10px;
+        font-size: 20px;
+      }
+
+      .detail-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .detail-grid .mini-stat {
+        padding: 12px;
+      }
+
+      .detail-grid .mini-stat strong {
+        margin-top: 6px;
+        font-size: 14px;
+      }
+
+      .support-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .support-card {
+        padding: 16px;
+      }
+
+      .support-card h3 {
+        margin: 8px 0 6px;
+        font-size: 16px;
+      }
+
+      .support-link {
+        margin-top: 12px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--accent);
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+      }
+
+      @media (max-width: 1120px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        .rail,
+        .index {
+          border-right: 0;
+          border-bottom: 1px solid var(--line);
+        }
+
+        .rail {
+          flex-direction: row;
+          align-items: center;
+        }
+
+        .rail-footer {
+          margin-top: 0;
+          margin-left: auto;
+        }
+
+        .surface-main {
+          grid-template-columns: 1fr;
+        }
+
+        .support-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .shell {
+          width: calc(100vw - 16px);
+          margin: 8px auto;
+          border-radius: 20px;
+        }
+
+        .surface,
+        .index {
+          padding: 18px;
+        }
+
+        .mini-stats,
+        .detail-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .surface-card {
+          min-height: 420px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <div class="grid">
+        <aside class="rail" aria-label="Workspace rail">
+          <div class="rail-badge active">◎</div>
+          <div class="rail-badge">△</div>
+          <div class="rail-badge">↗</div>
+          <div class="rail-badge">▣</div>
+          <div class="rail-badge">≣</div>
+          <div class="rail-footer">Geo Core Live</div>
+        </aside>
+
+        <aside class="index">
+          <div class="eyebrow">Field Archive / Operational Index</div>
+          <div class="title">GEOINT-PT</div>
+          <p class="lede">
+            Minimal deployable root for the GEOINT-PT handoff repository. This site exposes the
+            current intelligence-workspace PRD, prototype artifacts, and the core geospatial logic
+            files that define the behavior spine for the next implementation cycle.
+          </p>
+
+          <div class="status">
+            <div class="status-card">
+              <div class="card-meta">Current State</div>
+              <strong>Prototype handoff repository</strong>
+              <p>The repo currently contains design docs, prototype JSX artifacts, and TypeScript helper packs.</p>
+            </div>
+            <div class="status-card">
+              <div class="card-meta">Deployment</div>
+              <strong>Static landing page</strong>
+              <p>This root URL is intentionally lightweight so the project can be shared while the app shell is still under construction.</p>
+            </div>
+          </div>
+
+          <div class="artifact-list">
+            <a class="artifact-card" href="https://github.com/augustave/GEOINT-PT/blob/main/prd_intelligence_workspace_screen_family_completion.md">
+              <span class="artifact-pill">Primary Handoff</span>
+              <h3>Intelligence Workspace Completion PRD</h3>
+              <p>Repair-first execution brief for restoring the truncated workspace and modularizing the current prototype.</p>
+            </a>
+
+            <a class="artifact-card" href="https://github.com/augustave/GEOINT-PT/blob/main/intelligence_workspace.jsx">
+              <span class="artifact-pill">Main Prototype</span>
+              <h3>Intelligence Workspace JSX Artifact</h3>
+              <p>The current monolithic workspace prototype containing all five screen families in interrupted form.</p>
+            </a>
+
+            <a class="artifact-card" href="https://github.com/augustave/GEOINT-PT/blob/main/field_archive_preview.jsx">
+              <span class="artifact-pill">Recovery Reference</span>
+              <h3>Field Archive Preview</h3>
+              <p>Completed detail-pane and evidence treatment reference for rebuilding the right rail.</p>
+            </a>
+
+            <a class="artifact-card" href="https://github.com/augustave/GEOINT-PT/blob/main/geo_intelligence_core.ts">
+              <span class="artifact-pill">Geo Logic</span>
+              <h3>Geo Intelligence Core</h3>
+              <p>Shared geographic math, bbox handling, ring approximation, and geometry-truth helpers.</p>
+            </a>
+          </div>
+        </aside>
+
+        <main class="surface">
+          <div class="surface-inner">
+            <div class="surface-head">
+              <div>
+                <div class="surface-meta">Operational Surface</div>
+                <h2>Deployable Project Root</h2>
+              </div>
+              <div class="head-actions">
+                <div class="action-chip">5 screen families</div>
+                <div class="action-chip">bbox-driven logic</div>
+                <div class="action-chip">handoff ready</div>
+              </div>
+            </div>
+
+            <div class="surface-main">
+              <section class="surface-card hero" aria-label="Project overview">
+                <div class="map-ellipse"></div>
+                <div class="map-route"></div>
+                <div class="map-ring"></div>
+                <div class="map-dot cyan"></div>
+                <div class="map-dot gold"></div>
+                <div class="map-dot orange"></div>
+
+                <div class="map-card">
+                  <div class="section-label">Linked Selection</div>
+                  <h3>Intelligence Workspace</h3>
+                  <p>
+                    The current repo is a handoff package, not a finished product build. The live
+                    app surface is represented here as a field-archive landing page that routes
+                    directly into the source artifacts needed for the next coding cycle.
+                  </p>
+                  <div class="chip-row">
+                    <span class="chip">flat-map</span>
+                    <span class="chip">eo-overlay</span>
+                    <span class="chip">site-3d</span>
+                    <span class="chip">theater-3d</span>
+                    <span class="chip">ops-wall</span>
+                  </div>
+                </div>
+
+                <div class="mini-stats">
+                  <div class="mini-stat">
+                    <div class="section-label">Artifacts</div>
+                    <strong>10</strong>
+                    <p>Repository files currently tracked in the initial handoff commit.</p>
+                  </div>
+                  <div class="mini-stat">
+                    <div class="section-label">Priority</div>
+                    <strong>Repair</strong>
+                    <p>Restore the truncated workspace shell before deeper refactor work.</p>
+                  </div>
+                  <div class="mini-stat">
+                    <div class="section-label">Continuity</div>
+                    <strong>Active</strong>
+                    <p>Selection, compare, and geometry truth are the constraints to preserve.</p>
+                  </div>
+                </div>
+              </section>
+
+              <aside class="detail-column" aria-label="Detail panels">
+                <div class="detail-panel">
+                  <div class="section-label">Dossier Detail</div>
+                  <h3>Current Deployable Scope</h3>
+                  <p>
+                    This deploy establishes a stable root URL for the repo. It does not attempt to
+                    compile the interrupted React prototype yet.
+                  </p>
+                </div>
+
+                <div class="detail-panel">
+                  <div class="section-label">Core References</div>
+                  <div class="detail-grid">
+                    <div class="mini-stat">
+                      <div class="section-label">PRD</div>
+                      <strong>Refresh</strong>
+                    </div>
+                    <div class="mini-stat">
+                      <div class="section-label">UI Shell</div>
+                      <strong>Truncated</strong>
+                    </div>
+                    <div class="mini-stat">
+                      <div class="section-label">Geo Core</div>
+                      <strong>Reusable</strong>
+                    </div>
+                    <div class="mini-stat">
+                      <div class="section-label">Deploy</div>
+                      <strong>Live</strong>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="detail-panel">
+                  <div class="section-label">Next Move</div>
+                  <p>
+                    Use the PRD and helper files to rebuild the workspace shell, restore the right
+                    detail pane, and then extract screen-family modules without breaking bbox-driven
+                    rendering behavior.
+                  </p>
+                </div>
+              </aside>
+            </div>
+
+            <section class="support-grid" aria-label="Supporting files">
+              <a class="support-card" href="https://github.com/augustave/GEOINT-PT/blob/main/semantic_contracts_pack.ts">
+                <div class="section-label">Semantic Contracts</div>
+                <h3>Shared State and Projection Helpers</h3>
+                <p>Type definitions for field objects, selection state, compare state, and dossier projections.</p>
+                <span class="support-link">Open artifact →</span>
+              </a>
+
+              <a class="support-card" href="https://github.com/augustave/GEOINT-PT/blob/main/field_archive_geospatial_operating_system.md">
+                <div class="section-label">Design System</div>
+                <h3>Field Archive Geospatial Operating System</h3>
+                <p>Doctrine, tokens, component rules, and the visual operating language behind the interface direction.</p>
+                <span class="support-link">Open artifact →</span>
+              </a>
+
+              <a class="support-card" href="https://github.com/augustave/GEOINT-PT/blob/main/geospatial_intelligence_visual_operating_language_v_1.md">
+                <div class="section-label">Visual Language</div>
+                <h3>Geospatial Intelligence Visual Operating Language</h3>
+                <p>High-level UI grammar for evidence-rich geospatial products, including surface and state intent.</p>
+                <span class="support-link">Open artifact →</span>
+              </a>
+
+              <a class="support-card" href="https://github.com/augustave/GEOINT-PT">
+                <div class="section-label">Repository</div>
+                <h3>GitHub Source</h3>
+                <p>Browse the full repository, commit history, and raw source files on GitHub.</p>
+                <span class="support-link">Open repo →</span>
+              </a>
+            </section>
+          </div>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>
