@@ -1,0 +1,91 @@
+import { approximateCircle } from "./geo";
+import type { Feature } from "./types";
+
+export function createExampleCollection(): Feature[] {
+  return [
+    {
+      type: "Feature",
+      geometry: { type: "Polygon", coordinates: [approximateCircle([12.49, 41.89], 3200)] },
+      properties: {
+        id: "ZON-021",
+        entityType: "zone",
+        labelPrimary: "Search Radius Alpha",
+        labelSecondary: "Derived analysis · Sector 07",
+        operationalState: "selected",
+        priority: "medium",
+        confidence: "high",
+        freshness: "recent",
+        sourceClass: "derived_analysis",
+        regionCode: "SECTOR-07",
+        evidenceRefs: ["DOC-014 Analyst note", "IMG-019 Aerial crop"],
+        summary: "Computed search-radius overlay approximated from sampled geodesic points. Used to frame the active review envelope.",
+        timeLabel: "Window: 12:00–18:00 UTC",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "LineString",
+        coordinates: [
+          [12.44, 41.84],
+          [12.47, 41.86],
+          [12.5, 41.89],
+          [12.54, 41.915],
+        ],
+      },
+      properties: {
+        id: "RTE-088",
+        entityType: "route",
+        labelPrimary: "Corridor Ember 3",
+        labelSecondary: "Derived analysis · East link",
+        operationalState: "active",
+        priority: "medium",
+        confidence: "high",
+        freshness: "recent",
+        sourceClass: "derived_analysis",
+        regionCode: "CORRIDOR-E3",
+        evidenceRefs: ["RPT-087 Route reconstruction"],
+        summary: "High-confidence corridor linking southern staging area to sector transition point. Rendered as GeoJSON line geometry.",
+        timeLabel: "Updated 20m ago",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: { type: "Point", coordinates: [12.52, 41.91] },
+      properties: {
+        id: "INC-0142",
+        entityType: "incident",
+        labelPrimary: "Checkpoint Delta Event",
+        labelSecondary: "Sensor ingest · Sector 07",
+        operationalState: "alert",
+        priority: "high",
+        confidence: "medium",
+        freshness: "recent",
+        sourceClass: "sensor_ingest",
+        regionCode: "SECTOR-07",
+        evidenceRefs: ["IMG-044 Thermal frame", "SRC-201 Sensor burst"],
+        summary: "Unusual activity clustered near the eastern boundary. Incident point links back into the active range overlay and route corridor.",
+        timeLabel: "14:32 UTC",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: { type: "Point", coordinates: [12.455, 41.83] },
+      properties: {
+        id: "STE-203",
+        entityType: "site",
+        labelPrimary: "Depot North Marker",
+        labelSecondary: "Historical archive · Site",
+        operationalState: "stale",
+        priority: "low",
+        confidence: "confirmed",
+        freshness: "stale",
+        sourceClass: "historical_archive",
+        regionCode: "SITE-N2",
+        evidenceRefs: ["SRC-044 Registry extract"],
+        summary: "Persistent site anchor used for compare logic and route context. Deliberately shown as stale to demonstrate freshness semantics.",
+        timeLabel: "Last verified 3d ago",
+      },
+    },
+  ];
+}

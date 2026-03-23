@@ -1,0 +1,17 @@
+export const CLS = {
+  narrativeCard: "min-w-0 rounded-[24px] border border-[var(--border-subtle)] bg-[linear-gradient(180deg,rgba(27,28,22,0.96),rgba(17,18,15,0.94))] p-6 shadow-[var(--shadow-soft)]",
+  proofCard: "min-w-0 rounded-[22px] border border-[var(--border-subtle)] bg-[linear-gradient(180deg,rgba(27,28,22,0.96),rgba(17,18,15,0.94))] p-5 shadow-[var(--shadow-soft)]",
+  surfaceCard: "min-w-0 rounded-[22px] border border-[var(--border-subtle)] bg-[rgba(32,31,24,0.76)] p-5",
+  objectCardBase: "min-w-0 rounded-lg border p-3 transition cursor-pointer",
+  objectCardSelected: "min-w-0 rounded-lg border border-[#d1b16d] bg-[#232116] p-3 shadow-[0_0_0_1px_rgba(209,177,109,0.2)] transition cursor-pointer",
+  objectCardDefault: "min-w-0 rounded-lg border border-zinc-800 bg-[#141510] p-3 transition cursor-pointer hover:border-zinc-700",
+  dossierCard: "min-w-0 rounded-xl border border-zinc-800 bg-[#13140f] p-4",
+  dossierSection: "min-w-0 rounded-lg border border-zinc-800 bg-[#181914] p-3",
+  compareCard: "min-w-0 rounded-lg border border-zinc-800 bg-[#181914] px-2.5 py-2",
+  meta: "text-meta-xs uppercase tracking-[0.18em] text-zinc-500",
+  iconChip: "flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border",
+  pill: "shrink-0 rounded-full border px-1.5 py-0.5 text-[9px] uppercase tracking-[0.14em] transition",
+  pillActive: "border-[#ef8f45] bg-[#2a1d12] text-[#f2a86b]",
+  pillDefault: "border-zinc-700 bg-[#1b1c16] text-zinc-300 hover:border-zinc-500",
+  statusBarCard: "min-w-[110px] flex-1 rounded-lg border border-zinc-700/60 bg-[#1a1b15] p-2",
+} as const;

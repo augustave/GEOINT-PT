@@ -33,3 +33,24 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+/* Smooth selection */
+::selection {
+  background: rgba(209, 177, 109, 0.28);
+  color: var(--text-primary);
+}
+
+/* Scrollbar polish for webkit */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-subtle);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-strong);
+}

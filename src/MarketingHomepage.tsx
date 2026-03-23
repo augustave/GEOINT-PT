@@ -1,9 +1,12 @@
+import { Fragment } from "react";
 import { ArrowRight, CheckCircle2, ChevronDown, Hexagon, ShieldCheck } from "lucide-react";
 import { motion, type Variants } from "framer-motion";
+import { Link } from "react-router-dom";
 import copyDeck from "../design_spec_package/optimized_copy_deck.json";
 import surfaceStackUrl from "../design_spec_package/assets/surface-stack.svg";
 import signalGridUrl from "../design_spec_package/assets/signal-grid.svg";
-import IntelligenceWorkspace from "./IntelligenceWorkspace";
+import { SCREEN_FAMILY_SPECS, WORKSPACE_INVARIANTS } from "./workspace/config";
+import { NarrativeCard, ProofCard, SurfaceCard } from "./workspace/cardPrimitives";
 
 const sectionFade: Variants = {
   hidden: { opacity: 0, y: 20 },
@@ -13,8 +16,14 @@ const sectionFade: Variants = {
 type CopyDeck = typeof copyDeck;
 
 const proofCards = copyDeck.proof.cards;
-const featureItems = copyDeck.feature_section.items;
 const workflowSteps = copyDeck.workflow_section.steps;
+const screenFamilyRows = [
+  { label: "Role", key: "role" },
+  { label: "Question", key: "question" },
+  { label: "View", key: "view" },
+  { label: "Geometry", key: "geometryBehavior" },
+  { label: "Compare", key: "compareRole" },
+] as const;
 
 function SectionHeading(props: { eyebrow: string; headline: string; body?: string; centered?: boolean }) {
   const { eyebrow, headline, body, centered } = props;
@@ -109,13 +118,13 @@ function Hero(props: { deck: CopyDeck }) {
               </div>
 
               <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-                <a
-                  href="#workspace-demo"
+                <Link
+                  to="/workspace"
                   className="group inline-flex min-h-[48px] items-center justify-center gap-2 rounded-[14px] border border-[rgba(209,177,109,0.55)] bg-[var(--accent-primary)] px-6 py-2.5 text-sm font-semibold text-[var(--accent-primary-ink)] shadow-[0_6px_24px_rgba(209,177,109,0.25)] transition hover:translate-y-[-1px] hover:shadow-[0_8px_32px_rgba(209,177,109,0.35)]"
                 >
                   {deck.hero.primary_cta}
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                </a>
+                </Link>
                 <a
                   href="https://github.com/augustave/GEOINT-PT/blob/main/prd_intelligence_workspace_screen_family_completion.md"
                   className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-[14px] border border-[var(--border-strong)] bg-[rgba(27,28,22,0.82)] px-6 py-2.5 text-sm font-semibold text-[var(--text-primary)] transition hover:translate-y-[-1px] hover:border-[var(--accent-primary)]"
@@ -167,7 +176,7 @@ function Hero(props: { deck: CopyDeck }) {
             <div className="flex items-center justify-between gap-3 border-b border-[var(--border-subtle)] pb-4">
               <div>
                 <div className="text-[11px] uppercase tracking-[0.24em] text-[var(--text-muted)]">Preview Surface</div>
-                <div className="mt-2 text-2xl font-semibold tracking-[-0.04em] text-[var(--text-primary)]">Indexed landing stack, live workspace below</div>
+                <div className="mt-2 text-2xl font-semibold tracking-[-0.04em] text-[var(--text-primary)]">Indexed landing stack, workspace shell on separate route</div>
               </div>
               <div className="rounded-[14px] border border-[var(--border-subtle)] bg-[rgba(17,18,15,0.72)] px-4 py-2 text-[11px] uppercase tracking-[0.22em] text-[var(--accent-secondary)]">
                 Field archive
@@ -218,7 +227,7 @@ function Hero(props: { deck: CopyDeck }) {
           animate={{ y: [0, 4, 0] }}
           transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
         >
-          See proof and live demo
+          See proof and workspace shell
           <ChevronDown className="h-4 w-4" />
         </motion.a>
       </div>
@@ -244,17 +253,17 @@ export default function MarketingHomepage() {
             <a href="#proof-grid" className="hidden items-center px-3 py-2 text-sm text-[var(--text-secondary)] transition hover:text-[var(--text-primary)] md:inline-flex">
               Proof
             </a>
-            <a href="#workspace-demo" className="hidden items-center px-3 py-2 text-sm text-[var(--text-secondary)] transition hover:text-[var(--text-primary)] md:inline-flex">
-              Demo
+            <a href="#workspace-access" className="hidden items-center px-3 py-2 text-sm text-[var(--text-secondary)] transition hover:text-[var(--text-primary)] md:inline-flex">
+              Workspace
             </a>
             <div className="mx-1 hidden h-5 w-px bg-[var(--border-subtle)] md:block" />
-            <a href="#workspace-demo" className="hidden min-h-[36px] items-center rounded-[12px] border border-[var(--border-strong)] bg-[rgba(27,28,22,0.72)] px-3.5 py-1.5 text-sm text-[var(--text-secondary)] transition hover:border-[var(--accent-primary)] hover:text-[var(--text-primary)] sm:inline-flex">
-              Launch Demo
-            </a>
-            <a
-              href="https://github.com/augustave/GEOINT-PT"
-              className="inline-flex min-h-[36px] items-center rounded-[12px] bg-[var(--accent-primary)] px-3.5 py-1.5 text-sm font-semibold text-[var(--accent-primary-ink)] transition hover:brightness-110"
+            <Link
+              to="/workspace"
+              className="hidden min-h-[36px] items-center rounded-[12px] border border-[var(--border-strong)] bg-[rgba(27,28,22,0.72)] px-3.5 py-1.5 text-sm text-[var(--text-secondary)] transition hover:border-[var(--accent-primary)] hover:text-[var(--text-primary)] sm:inline-flex"
             >
+              Launch Workspace
+            </Link>
+            <a href="https://github.com/augustave/GEOINT-PT" className="inline-flex min-h-[36px] items-center rounded-[12px] bg-[var(--accent-primary)] px-3.5 py-1.5 text-sm font-semibold text-[var(--accent-primary-ink)] transition hover:brightness-110">
               GitHub
             </a>
           </nav>
@@ -277,12 +286,14 @@ export default function MarketingHomepage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.3 }}
                   transition={{ delay: index * 0.06 }}
-                  className="group relative rounded-[24px] border border-[var(--border-subtle)] bg-[linear-gradient(180deg,rgba(27,28,22,0.96),rgba(17,18,15,0.94))] p-6 shadow-[var(--shadow-soft)] transition-all duration-300 hover:border-[var(--border-strong)] hover:shadow-[0_24px_64px_rgba(0,0,0,0.35)]"
+                  className="group min-h-[180px]"
                 >
-                  <div className="absolute right-5 top-0 h-3 w-14 rounded-b-[8px] border-x border-b border-[var(--border-strong)] bg-[rgba(209,177,109,0.16)] transition-colors group-hover:bg-[rgba(209,177,109,0.28)]" />
-                  <div className="text-[11px] uppercase tracking-[0.22em] text-[var(--text-muted)]">{card.label}</div>
-                  <div className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-[var(--text-primary)]">{card.value}</div>
-                  <p className="mt-4 text-sm leading-7 text-[var(--text-secondary)]">{card.body}</p>
+                  <ProofCard className="relative h-full transition-all duration-300 group-hover:border-[var(--border-strong)] group-hover:shadow-[0_24px_64px_rgba(0,0,0,0.35)]">
+                    <div className="absolute right-5 top-0 h-3 w-14 rounded-b-[8px] border-x border-b border-[var(--border-strong)] bg-[rgba(209,177,109,0.16)] transition-colors group-hover:bg-[rgba(209,177,109,0.28)]" />
+                    <div className="text-[11px] uppercase tracking-[0.22em] text-[var(--text-muted)]">{card.label}</div>
+                    <div className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-[var(--text-primary)]">{card.value}</div>
+                    <p className="mt-4 text-sm leading-7 text-[var(--text-secondary)]">{card.body}</p>
+                  </ProofCard>
                 </motion.div>
               ))}
             </div>
@@ -294,24 +305,112 @@ export default function MarketingHomepage() {
             <motion.div variants={sectionFade} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }}>
               <SectionHeading eyebrow={copyDeck.feature_section.eyebrow} headline={copyDeck.feature_section.headline} />
             </motion.div>
-            <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
-              {featureItems.map((item, index) => (
-                <motion.div
-                  key={item.title}
-                  initial={{ opacity: 0, y: 14 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.25 }}
-                  transition={{ delay: index * 0.05 }}
-                  className="group relative rounded-[22px] border border-[var(--border-subtle)] bg-[rgba(32,31,24,0.76)] p-5 transition-all duration-300 hover:border-[var(--border-strong)] hover:bg-[rgba(38,37,28,0.82)]"
-                >
-                  <div className="absolute right-5 top-0 h-3 w-12 rounded-b-[8px] border-x border-b border-[var(--border-strong)] bg-[rgba(95,200,216,0.12)] transition-colors group-hover:bg-[rgba(95,200,216,0.22)]" />
-                  <div className="inline-flex h-10 min-w-[40px] items-center justify-center rounded-[12px] border border-[var(--border-strong)] bg-[rgba(209,177,109,0.12)] px-3.5 text-sm font-semibold text-[var(--accent-primary)] transition-colors group-hover:bg-[rgba(209,177,109,0.18)]">
-                    0{index + 1}
+            <NarrativeCard className="mt-10 overflow-hidden">
+              <div className="grid gap-4 xl:grid-cols-[180px_repeat(5,minmax(0,1fr))]">
+                <div className="hidden xl:block" />
+                {SCREEN_FAMILY_SPECS.map((spec) => (
+                  <SurfaceCard key={spec.id} className="min-h-[220px] border-[var(--border-strong)] bg-[rgba(24,25,19,0.82)]">
+                    <div className="text-[11px] uppercase tracking-[0.22em] text-[var(--text-muted)]">{spec.shortName}</div>
+                    <h3 className="mt-3 text-xl font-semibold tracking-[-0.04em] text-[var(--text-primary)]">{spec.name}</h3>
+                    <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">{spec.behaviorSummary}</p>
+                  </SurfaceCard>
+                ))}
+                {screenFamilyRows.map((row) => (
+                  <Fragment key={row.key}>
+                    <div className="hidden items-center rounded-[16px] border border-[var(--border-subtle)] bg-[rgba(17,18,15,0.7)] px-4 py-3 text-[11px] uppercase tracking-[0.22em] text-[var(--text-muted)] xl:flex">
+                      {row.label}
+                    </div>
+                    {SCREEN_FAMILY_SPECS.map((spec) => (
+                      <div key={`${spec.id}-${row.key}`} className="rounded-[16px] border border-[var(--border-subtle)] bg-[rgba(17,18,15,0.72)] px-4 py-3">
+                        <div className="text-[11px] uppercase tracking-[0.22em] text-[var(--text-muted)] xl:hidden">{row.label}</div>
+                        <div className="mt-1 text-sm font-medium text-[var(--text-primary)]">{spec[row.key]}</div>
+                      </div>
+                    ))}
+                  </Fragment>
+                ))}
+              </div>
+              <div className="mt-6 flex flex-wrap gap-2">
+                {WORKSPACE_INVARIANTS.map((item) => (
+                  <div key={item} className="inline-flex min-h-[38px] items-center rounded-[12px] border border-[rgba(95,200,216,0.24)] bg-[rgba(17,18,15,0.72)] px-3.5 text-[12px] uppercase tracking-[0.18em] text-[var(--accent-secondary)]">
+                    {item}
                   </div>
-                  <h3 className="mt-4 text-[var(--display-small)] font-semibold tracking-[-0.04em] text-[var(--text-primary)]">{item.title}</h3>
-                  <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">{item.body}</p>
-                </motion.div>
-              ))}
+                ))}
+              </div>
+            </NarrativeCard>
+          </div>
+        </section>
+
+        <section id="workspace-access" className="border-b border-[var(--border-subtle)] bg-[var(--surface-canvas)]">
+          <div className="mx-auto max-w-[var(--container-max)] px-5 py-16 md:px-8 lg:px-10 lg:py-20">
+            <div className="grid gap-6 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1.12fr)] lg:items-center">
+              <motion.div variants={sectionFade} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }}>
+                <SectionHeading eyebrow={copyDeck.demo_section.eyebrow} headline="Enter the operational shell on its own route." body="The live workspace is no longer nested inside the marketing grid. Launching the shell now opens the full three-column application container with persistent selection, compare, extent, and dossier continuity." />
+                <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                  <Link
+                    to="/workspace"
+                    className="group inline-flex min-h-[48px] items-center justify-center gap-2 rounded-[14px] border border-[rgba(209,177,109,0.55)] bg-[var(--accent-primary)] px-6 py-2.5 text-sm font-semibold text-[var(--accent-primary-ink)] shadow-[0_6px_24px_rgba(209,177,109,0.25)] transition hover:translate-y-[-1px] hover:shadow-[0_8px_32px_rgba(209,177,109,0.35)]"
+                  >
+                    Launch Workspace
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                  </Link>
+                  <a
+                    href="https://github.com/augustave/GEOINT-PT"
+                    className="group inline-flex min-h-[48px] shrink-0 items-center justify-center gap-2 rounded-[14px] border border-[var(--border-strong)] bg-[rgba(27,28,22,0.78)] px-6 py-2.5 text-sm font-semibold text-[var(--text-primary)] transition hover:border-[var(--accent-primary)]"
+                  >
+                    {copyDeck.demo_section.primary_cta}
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                  </a>
+                </div>
+              </motion.div>
+
+              <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.6 }}>
+                <NarrativeCard className="overflow-hidden">
+                  <div className="flex items-center justify-between gap-3 border-b border-[var(--border-subtle)] pb-4">
+                    <div>
+                      <div className="text-[11px] uppercase tracking-[0.22em] text-[var(--text-muted)]">Workspace Shell</div>
+                      <div className="mt-2 text-2xl font-semibold tracking-[-0.04em] text-[var(--text-primary)]">Three-column operational application</div>
+                    </div>
+                    <div className="rounded-[14px] border border-[var(--border-subtle)] bg-[rgba(17,18,15,0.72)] px-4 py-2 text-[11px] uppercase tracking-[0.22em] text-[var(--accent-secondary)]">
+                      Separate route
+                    </div>
+                  </div>
+                  <div className="mt-6 grid min-h-[320px] gap-3 lg:grid-cols-[22%_54%_24%]">
+                    <div className="rounded-[18px] border border-[var(--border-subtle)] bg-[rgba(17,18,15,0.72)] p-4">
+                      <div className="text-[11px] uppercase tracking-[0.22em] text-[var(--text-muted)]">Left Rail</div>
+                      <div className="mt-3 space-y-2">
+                        {["Screen Families", "Search", "Active Layers", "Operational Index"].map((item) => (
+                          <div key={item} className="rounded-[12px] border border-[var(--border-subtle)] bg-[rgba(32,31,24,0.62)] px-3 py-2 text-sm text-[var(--text-secondary)]">
+                            {item}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="rounded-[18px] border border-[var(--border-subtle)] bg-[rgba(17,18,15,0.72)] p-4">
+                      <div className="text-[11px] uppercase tracking-[0.22em] text-[var(--text-muted)]">Main Surface</div>
+                      <div className="mt-3 overflow-hidden rounded-[14px] border border-[var(--border-subtle)]">
+                        <img src={surfaceStackUrl} alt="Operational shell preview" className="h-auto w-full" />
+                      </div>
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {["Scope", "BBox", "Selection", "Compare"].map((item) => (
+                          <div key={item} className="rounded-full border border-[rgba(95,200,216,0.24)] px-2.5 py-1 text-[11px] uppercase tracking-[0.16em] text-[var(--accent-secondary)]">
+                            {item}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="rounded-[18px] border border-[var(--border-subtle)] bg-[rgba(17,18,15,0.72)] p-4">
+                      <div className="text-[11px] uppercase tracking-[0.22em] text-[var(--text-muted)]">Dossier</div>
+                      <div className="mt-3 space-y-2">
+                        {["Metadata", "Summary", "Evidence", "Compare Queue"].map((item) => (
+                          <div key={item} className="rounded-[12px] border border-[var(--border-subtle)] bg-[rgba(32,31,24,0.62)] px-3 py-2 text-sm text-[var(--text-secondary)]">
+                            {item}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </NarrativeCard>
+              </motion.div>
             </div>
           </div>
         </section>
@@ -345,45 +444,18 @@ export default function MarketingHomepage() {
           </div>
         </section>
 
-        <section id="workspace-demo" className="border-b border-[var(--border-subtle)] bg-[var(--surface-canvas)]">
-          <div className="mx-auto max-w-[var(--container-max)] px-5 py-16 md:px-8 lg:px-10 lg:py-20">
-            <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-              <motion.div variants={sectionFade} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }}>
-                <SectionHeading eyebrow={copyDeck.demo_section.eyebrow} headline={copyDeck.demo_section.headline} body={copyDeck.demo_section.body} />
-              </motion.div>
-              <a
-                href="https://github.com/augustave/GEOINT-PT"
-                className="group inline-flex min-h-[48px] shrink-0 items-center justify-center gap-2 rounded-[14px] border border-[var(--border-strong)] bg-[rgba(27,28,22,0.78)] px-6 py-2.5 text-sm font-semibold text-[var(--text-primary)] transition hover:border-[var(--accent-primary)]"
-              >
-                {copyDeck.demo_section.primary_cta}
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-              </a>
-            </div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.6 }}
-              className="mt-10 overflow-hidden rounded-[32px] border border-[var(--border-strong)] bg-[var(--surface-base)] shadow-[0_40px_120px_rgba(0,0,0,0.5)]"
-            >
-              <IntelligenceWorkspace />
-            </motion.div>
-          </div>
-        </section>
-
         <section className="relative overflow-hidden bg-[linear-gradient(180deg,var(--surface-panel-alt),var(--surface-elevated))]">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(209,177,109,0.08),transparent_50%)]" />
           <div className="relative mx-auto max-w-[var(--container-max)] px-5 py-20 text-center md:px-8 lg:px-10 lg:py-28">
             <motion.div variants={sectionFade} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }}>
               <SectionHeading eyebrow="Next Cycle" headline={copyDeck.final_cta.headline} body={copyDeck.final_cta.body} centered />
               <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                <a
-                  href="https://github.com/augustave/GEOINT-PT"
+                <Link
+                  to="/workspace"
                   className="inline-flex min-h-[48px] items-center justify-center rounded-[14px] bg-[var(--accent-primary)] px-6 py-2.5 text-sm font-semibold text-[var(--accent-primary-ink)] shadow-[0_6px_24px_rgba(209,177,109,0.25)] transition hover:translate-y-[-1px] hover:shadow-[0_8px_32px_rgba(209,177,109,0.35)]"
                 >
-                  {copyDeck.final_cta.primary_cta}
-                </a>
+                  Launch Workspace
+                </Link>
                 <a
                   href="https://github.com/augustave/GEOINT-PT/blob/main/prd_intelligence_workspace_screen_family_completion.md"
                   className="inline-flex min-h-[48px] items-center justify-center rounded-[14px] border border-[var(--border-strong)] px-6 py-2.5 text-sm font-semibold text-[var(--text-primary)] transition hover:translate-y-[-1px] hover:border-[var(--accent-primary)]"
