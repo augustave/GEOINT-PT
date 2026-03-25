@@ -10,6 +10,8 @@ Multi-view geo-intelligence workspace prototype built around:
   - site 3D
   - theater 3D
   - ops wall
+    
+<img width="1715" height="929" alt="Screenshot 2026-03-25 at 5 25 52 PM" src="https://github.com/user-attachments/assets/df0899dd-5cd8-40a9-afeb-f1cea5da42b7" />
 
 ## What Runs Now
 
