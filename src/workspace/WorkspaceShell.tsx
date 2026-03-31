@@ -1,12 +1,10 @@
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import {
-  ArrowRight,
   Crosshair,
   Eye,
   EyeOff,
   Layers3,
   LocateFixed,
-  Monitor,
   Plus,
   Search,
   TimerReset,
@@ -14,9 +12,16 @@ import {
 import { motion } from "framer-motion";
 import { AUXILIARY_RAIL_ICONS, LAYERS, SCREEN_FAMILY_BY_ID, SCREEN_FAMILY_SPECS } from "./config";
 import { statusClasses, topBarSubtitle } from "./geo";
-import { CompareCard, DossierCard, SurfaceCard } from "./cardPrimitives";
+import { CompareCard, DossierCard } from "./cardPrimitives";
 import { CLS } from "./styles";
-import type { ExtentMode, Feature, WorkspaceMode } from "./types";
+import { currentTaskForObject, missionThreadForObject, tasksForObject } from "./tasking";
+import { MissionThreadPanel } from "./components/MissionThreadPanel";
+import { TaskChip } from "./components/TaskChip";
+import { TaskComposer } from "./components/TaskComposer";
+import { TaskContextBar } from "./components/TaskContextBar";
+import { TaskQueuePanel } from "./components/TaskQueuePanel";
+import { TaskStatusCard } from "./components/TaskStatusCard";
+import type { CreateTaskInput, ExtentMode, Feature, MissionThreadModel, TaskModel, TaskStatus, WorkspaceMode } from "./types";
 
 function cx(...parts: Array<string | false | null | undefined>) {
   return parts.filter(Boolean).join(" ");
@@ -28,6 +33,9 @@ interface WorkspaceShellProps {
   comparedIds: string[];
   comparedFeatures: Feature[];
   dossierCards: Feature[];
+  tasks: TaskModel[];
+  missionThreads: MissionThreadModel[];
+  selectedTaskId: string | null;
   visibleLayers: Record<string, boolean>;
   visibleFeaturesCount: number;
   activeBBox: string;
@@ -38,8 +46,14 @@ interface WorkspaceShellProps {
   onToggleCompare: (id: string) => void;
   onToggleLayer: (layerId: string) => void;
   onSelectFeature: (id: string) => void;
+  onSelectTask: (id: string | null) => void;
   onSetExtentMode: (mode: ExtentMode) => void;
   onSetWorkspaceMode: (mode: WorkspaceMode) => void;
+  onCreateTask: (input: CreateTaskInput) => TaskModel | null;
+  onAssignTask: (taskId: string, assignee: string | null) => void;
+  onSetTaskStatus: (taskId: string, status: TaskStatus) => void;
+  onAttachEvidence: (taskId: string, evidenceId: string) => void;
+  onAttachCompare: (taskId: string, compareId: string) => void;
 }
 
 interface SharedShellProps extends WorkspaceShellProps {
@@ -189,47 +203,43 @@ function SelectedDetailBlock(props: { selectedFeature: Feature; comparedIds: str
   );
 }
 
+function objectTaskState(props: { tasks: TaskModel[]; missionThreads: MissionThreadModel[]; objectId: string; selectedTaskId: string | null }) {
+  const objectTasks = tasksForObject(props.tasks, props.objectId);
+  return {
+    objectTasks,
+    currentTask: currentTaskForObject(props.tasks, props.objectId, props.selectedTaskId),
+    thread: missionThreadForObject(props.missionThreads, props.objectId),
+  };
+}
+
 function UnifiedTopBar(props: SharedShellProps) {
-  const { 
-    selectedFeature, 
-    comparedIds, 
-    workspaceMode, 
-    onSetWorkspaceMode,
-    currentSurface
-  } = props;
+  const { selectedFeature, comparedFeatures, tasks, missionThreads, selectedTaskId, workspaceMode, onSetWorkspaceMode, currentSurface, onCreateTask } = props;
+  const [composerOpen, setComposerOpen] = useState(false);
+  const { objectTasks, currentTask } = objectTaskState({
+    tasks,
+    missionThreads,
+    objectId: selectedFeature.properties.id,
+    selectedTaskId,
+  });
 
   return (
     <div className="border-b border-zinc-800 bg-[#0d0e0a] px-4 py-3">
       <div className="flex items-center justify-between gap-4">
-        {/* Left Cluster: Identity + Task */}
         <div className="flex min-w-0 items-center gap-3">
-          <div className="inline-flex items-center gap-2 rounded-md border border-[#d1b16d]/40 bg-[#1a1811] px-2.5 py-1.5 shadow-[0_0_10px_rgba(209,177,109,0.1)]">
-            <span className="text-[10px] uppercase tracking-[0.16em] text-zinc-500">Selected</span>
-            <span className="text-sm font-semibold text-[#e7cf89] truncate max-w-[180px]">{selectedFeature.properties.labelPrimary}</span>
-          </div>
-          <div className="hidden items-center gap-2 sm:flex">
-             <div className="h-4 w-px bg-zinc-800 mx-1" />
-             <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">
-               {selectedFeature.properties.id} · {selectedFeature.properties.regionCode}
-             </div>
-             <div className="h-4 w-px bg-zinc-800 mx-1" />
-             <div className="inline-flex items-center gap-2 rounded-md border border-zinc-800 bg-black/40 px-2 py-1 text-[10px] uppercase tracking-[0.16em] text-zinc-400">
-               Aimpoints ({Math.max(comparedIds.length, 1)}x)
-             </div>
-             <button type="button" className="inline-flex items-center gap-1.5 rounded-md border border-[#b0bf63]/40 bg-[#1b1e11] px-2 py-1 text-[10px] uppercase tracking-[0.16em] text-[#d6dd7b] hover:border-[#b0bf63]">
-               Task Asset
-             </button>
-          </div>
+          <TaskContextBar
+            selectedFeature={selectedFeature}
+            currentTask={currentTask}
+            taskCount={objectTasks.length}
+            onOpenComposer={() => setComposerOpen((open) => !open)}
+          />
         </div>
 
-        {/* Right Cluster: Surface Switcher */}
         <div className="flex shrink-0 items-center gap-3">
           <div className="hidden text-[10px] uppercase tracking-[0.18em] text-zinc-500 md:block">Surface Family</div>
           <SurfaceModeTabs workspaceMode={workspaceMode} onSetWorkspaceMode={onSetWorkspaceMode} compact />
         </div>
       </div>
 
-      {/* Subheader: Surface Context */}
       <div className="mt-3 flex items-center justify-between border-t border-zinc-800/50 pt-2.5">
         <div className="flex items-center gap-3">
           <div className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#ef8f45]">
@@ -243,6 +253,15 @@ function UnifiedTopBar(props: SharedShellProps) {
           Intelligence Workspace v2.0
         </div>
       </div>
+      <TaskComposer
+        open={composerOpen}
+        selectedFeature={selectedFeature}
+        comparedFeatures={comparedFeatures}
+        onClose={() => setComposerOpen(false)}
+        onSubmit={(input) => {
+          onCreateTask(input);
+        }}
+      />
     </div>
   );
 }
@@ -254,6 +273,9 @@ function MapShell(props: SharedShellProps) {
     comparedIds,
     comparedFeatures,
     dossierCards,
+    tasks,
+    missionThreads,
+    selectedTaskId,
     visibleLayers,
     visibleFeaturesCount,
     activeBBox,
@@ -263,9 +285,18 @@ function MapShell(props: SharedShellProps) {
     onQueryChange,
     onToggleCompare,
     onSelectFeature,
+    onSelectTask,
     onToggleLayer,
     onSetExtentMode,
+    onAssignTask,
+    onSetTaskStatus,
   } = props;
+  const { objectTasks, currentTask, thread } = objectTaskState({
+    tasks,
+    missionThreads,
+    objectId: selectedFeature.properties.id,
+    selectedTaskId,
+  });
 
   return (
     <div className="min-h-screen bg-[#0f100d] text-zinc-100">
@@ -328,6 +359,13 @@ function MapShell(props: SharedShellProps) {
                             <div className={CLS.meta}>{feature.properties.id}</div>
                             <div className="mt-0.5 truncate text-sm font-medium text-zinc-100">{feature.properties.labelPrimary}</div>
                             <div className="mt-0.5 truncate text-[12px] text-zinc-400">{feature.properties.labelSecondary}</div>
+                            <div className="mt-2">
+                              <TaskChip
+                                count={tasksForObject(tasks, feature.properties.id).length}
+                                status={currentTaskForObject(tasks, feature.properties.id, selectedTaskId)?.status ?? null}
+                                priority={currentTaskForObject(tasks, feature.properties.id, selectedTaskId)?.priority ?? null}
+                              />
+                            </div>
                           </div>
                           <span className={cx(CLS.pill, statusClasses(feature.properties.operationalState))}>{feature.properties.operationalState}</span>
                         </div>
@@ -378,6 +416,10 @@ function MapShell(props: SharedShellProps) {
 
             <aside className="bg-[#181914] p-4 flex flex-col gap-4 overflow-auto">
               <SelectedDetailBlock selectedFeature={selectedFeature} comparedIds={comparedIds} onToggleCompare={onToggleCompare} />
+
+              <TaskStatusCard task={currentTask} onAssignTask={onAssignTask} onSetTaskStatus={onSetTaskStatus} />
+
+              <MissionThreadPanel thread={thread} tasks={objectTasks} selectedTaskId={selectedTaskId} onSelectTask={onSelectTask} />
 
               <DossierCard className="p-3">
                 <div className="mb-2 flex items-center justify-between">
@@ -436,18 +478,23 @@ function SceneShell(props: SharedShellProps) {
     comparedIds,
     comparedFeatures,
     dossierCards,
+    tasks,
+    missionThreads,
+    selectedTaskId,
     visibleLayers,
     visibleFeaturesCount,
     activeBBox,
     extentMode,
-    workspaceMode,
     currentSurface,
     renderMainSurface,
     onQueryChange,
     onToggleCompare,
     onSelectFeature,
+    onSelectTask,
     onToggleLayer,
     onSetExtentMode,
+    onAssignTask,
+    onSetTaskStatus,
   } = props;
 
   const sceneObjects = dossierCards.slice(0, 8);
@@ -456,6 +503,12 @@ function SceneShell(props: SharedShellProps) {
     { label: "Layers", icon: Layers3 },
     { label: "Compare", icon: LocateFixed },
   ];
+  const { objectTasks, currentTask, thread } = objectTaskState({
+    tasks,
+    missionThreads,
+    objectId: selectedFeature.properties.id,
+    selectedTaskId,
+  });
 
   return (
     <div className="min-h-screen bg-[#0a0b08] text-zinc-100">
@@ -505,6 +558,14 @@ function SceneShell(props: SharedShellProps) {
                         <div className="min-w-0">
                           <div className="truncate text-sm font-medium text-zinc-100">{feature.properties.labelPrimary}</div>
                           <div className="mt-1 truncate text-[11px] uppercase tracking-[0.16em] text-zinc-500">{feature.properties.id} · {feature.properties.entityType}</div>
+                          <div className="mt-2">
+                            <TaskChip
+                              count={tasksForObject(tasks, feature.properties.id).length}
+                              status={currentTaskForObject(tasks, feature.properties.id, selectedTaskId)?.status ?? null}
+                              priority={currentTaskForObject(tasks, feature.properties.id, selectedTaskId)?.priority ?? null}
+                              compact
+                            />
+                          </div>
                         </div>
                         {compared ? <span className={cx(CLS.pill, CLS.pillActive)}>Pinned</span> : null}
                       </div>
@@ -555,6 +616,10 @@ function SceneShell(props: SharedShellProps) {
 
             <aside className="bg-[#181914] p-4 flex flex-col gap-4 overflow-auto">
               <SelectedDetailBlock selectedFeature={selectedFeature} comparedIds={comparedIds} onToggleCompare={onToggleCompare} condensed />
+
+              <TaskStatusCard task={currentTask} onAssignTask={onAssignTask} onSetTaskStatus={onSetTaskStatus} />
+
+              <MissionThreadPanel thread={thread} tasks={objectTasks} selectedTaskId={selectedTaskId} onSelectTask={onSelectTask} />
 
               <DossierCard className="p-3">
                 <div className="mb-2 flex items-center justify-between">
@@ -632,14 +697,24 @@ function OpsWallShell(props: SharedShellProps) {
     comparedIds,
     comparedFeatures,
     dossierCards,
+    tasks,
+    missionThreads,
+    selectedTaskId,
     visibleFeaturesCount,
     activeBBox,
-    workspaceMode,
     renderMainSurface,
     onToggleCompare,
     onSelectFeature,
-    onSetWorkspaceMode,
+    onSelectTask,
+    onAssignTask,
+    onSetTaskStatus,
   } = props;
+  const { objectTasks, currentTask, thread } = objectTaskState({
+    tasks,
+    missionThreads,
+    objectId: selectedFeature.properties.id,
+    selectedTaskId,
+  });
 
   return (
     <div className="min-h-screen bg-black text-zinc-100">
@@ -657,24 +732,31 @@ function OpsWallShell(props: SharedShellProps) {
           
           <div className="grid min-h-[calc(100vh-122px)] grid-cols-1 gap-3 p-3 xl:grid-cols-[260px_minmax(0,1fr)_300px]">
             <div className="space-y-3">
-              {["Mission Queue", "Asset Status", "Alerts"].map((panel) => (
-                <DossierCard key={panel} className="p-3">
-                  <div className="text-[11px] uppercase tracking-[0.18em] text-zinc-500">{panel}</div>
-                  <div className="mt-3 space-y-2">
-                    {dossierCards.slice(0, 3).map((feature) => (
-                      <button
-                        key={`${panel}-${feature.properties.id}`}
-                        type="button"
-                        onClick={() => onSelectFeature(feature.properties.id)}
-                        className="w-full rounded-lg border border-zinc-800 bg-black/45 px-2.5 py-2 text-left"
-                      >
+              <TaskQueuePanel tasks={tasks} onSelectTask={onSelectTask} />
+              <DossierCard className="p-3">
+                <div className="text-[11px] uppercase tracking-[0.18em] text-zinc-500">Asset Status</div>
+                <div className="mt-3 space-y-2">
+                  {dossierCards.slice(0, 3).map((feature) => (
+                    <button
+                      key={`asset-${feature.properties.id}`}
+                      type="button"
+                      onClick={() => onSelectFeature(feature.properties.id)}
+                      className="w-full rounded-lg border border-zinc-800 bg-black/45 px-2.5 py-2 text-left"
+                    >
+                      <div className="flex items-center justify-between gap-2">
                         <div className="text-sm text-zinc-100">{feature.properties.labelPrimary}</div>
-                        <div className="mt-1 text-[11px] uppercase tracking-[0.16em] text-zinc-500">{feature.properties.operationalState}</div>
-                      </button>
-                    ))}
-                  </div>
-                </DossierCard>
-              ))}
+                        <TaskChip
+                          count={tasksForObject(tasks, feature.properties.id).length}
+                          status={currentTaskForObject(tasks, feature.properties.id, selectedTaskId)?.status ?? null}
+                          priority={currentTaskForObject(tasks, feature.properties.id, selectedTaskId)?.priority ?? null}
+                          compact
+                        />
+                      </div>
+                      <div className="mt-1 text-[11px] uppercase tracking-[0.16em] text-zinc-500">{feature.properties.operationalState}</div>
+                    </button>
+                  ))}
+                </div>
+              </DossierCard>
             </div>
 
             <div className="relative overflow-hidden rounded-[18px] border border-zinc-800 bg-[#090909]">
@@ -683,6 +765,10 @@ function OpsWallShell(props: SharedShellProps) {
 
             <aside className="space-y-3 overflow-auto bg-[#12130f] p-1">
               <SelectedDetailBlock selectedFeature={selectedFeature} comparedIds={comparedIds} onToggleCompare={onToggleCompare} condensed />
+
+              <TaskStatusCard task={currentTask} onAssignTask={onAssignTask} onSetTaskStatus={onSetTaskStatus} />
+
+              <MissionThreadPanel thread={thread} tasks={objectTasks} selectedTaskId={selectedTaskId} onSelectTask={onSelectTask} />
 
               <DossierCard className="p-3">
                 <div className="mb-2 flex items-center justify-between">

@@ -9,13 +9,16 @@ import {
   Target,
   type LucideIcon,
 } from "lucide-react";
-import type { ScreenFamilySpec, WorkspaceMode } from "./types";
+import type { ScreenFamilySpec, SurfaceConfig, WorkspaceMode } from "./types";
 
 export const T = {
-  accentOrange: "#ef8f45",
-  secondary: "#5fc8d8",
-  verified: "#d6dd7b",
-  theaterStroke: "#e2c46b",
+  referenceBlue: "var(--geometry-reference-blue)",
+  activeAmber: "var(--geometry-active-amber)",
+  neutralMuted: "var(--geometry-neutral-muted)",
+  panelBg: "var(--surface-panel)",
+  panelBorder: "var(--color-panel-border)",
+  alert: "var(--accent-alert)",
+  verified: "var(--accent-verified)",
 } as const;
 
 export const AUXILIARY_RAIL_ICONS: LucideIcon[] = [MapPinned, AlertTriangle, Route, FileText, Layers3];
@@ -116,6 +119,59 @@ export const SCREEN_FAMILY_SPECS: Array<ScreenFamilySpec & { Icon: LucideIcon }>
 export const SCREEN_FAMILY_BY_ID = Object.fromEntries(
   SCREEN_FAMILY_SPECS.map((spec) => [spec.id, spec])
 ) as Record<WorkspaceMode, (typeof SCREEN_FAMILY_SPECS)[number]>;
+
+export const SURFACE_CONFIG_BY_MODE: Record<WorkspaceMode, SurfaceConfig> = {
+  "flat-map": {
+    mode: "flat-map",
+    lighting: "neutral",
+    camera: "orthographic",
+    gridVisible: true,
+    groundPlaneVisible: false,
+    annotationDensity: "medium",
+    overlays: ["bbox", "reference-grid", "selection-ring"],
+    backgroundVar: "var(--mode-flat-background)",
+  },
+  "eo-overlay": {
+    mode: "eo-overlay",
+    lighting: "cold",
+    camera: "top-down-tilt",
+    gridVisible: true,
+    groundPlaneVisible: false,
+    annotationDensity: "high",
+    overlays: ["scan-grid", "measurement-guides", "aimpoint-boxes"],
+    backgroundVar: "var(--mode-eo-background)",
+  },
+  "site-3d": {
+    mode: "site-3d",
+    lighting: "spot",
+    camera: "fixed-oblique",
+    gridVisible: true,
+    groundPlaneVisible: true,
+    annotationDensity: "medium",
+    overlays: ["ground-plane", "local-frame", "reference-markers"],
+    backgroundVar: "var(--mode-site-background)",
+  },
+  "theater-3d": {
+    mode: "theater-3d",
+    lighting: "radial",
+    camera: "elevated-orbital",
+    gridVisible: true,
+    groundPlaneVisible: true,
+    annotationDensity: "medium",
+    overlays: ["ring-stack", "vector-suite", "scale-proof"],
+    backgroundVar: "var(--mode-theater-background)",
+  },
+  "ops-wall": {
+    mode: "ops-wall",
+    lighting: "flat",
+    camera: "orthographic",
+    gridVisible: true,
+    groundPlaneVisible: false,
+    annotationDensity: "high",
+    overlays: ["monitor-grid", "mission-geometry", "status-panels"],
+    backgroundVar: "var(--mode-ops-background)",
+  },
+};
 
 export const LAYERS = [
   { id: "zones", label: "Zones" },

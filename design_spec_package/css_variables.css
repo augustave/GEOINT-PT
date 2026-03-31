@@ -5,6 +5,8 @@
   --surface-panel-alt: #201f18;
   --surface-elevated: #262318;
   --surface-paper: #222018;
+  --color-panel-bg: rgba(10, 12, 13, 0.72);
+  --color-panel-border: rgba(255, 255, 255, 0.06);
   --surface-glow: rgba(209, 177, 109, 0.12);
   --surface-glow-strong: rgba(209, 177, 109, 0.18);
 
@@ -20,6 +22,42 @@
   --accent-secondary: #5fc8d8;
   --accent-alert: #ef8f45;
   --accent-verified: #d6dd7b;
+  --geometry-reference-blue: #4fd1ff;
+  --geometry-active-amber: #ffc857;
+  --geometry-neutral-muted: rgba(240, 236, 227, 0.42);
+  --geometry-node-incident: var(--geometry-active-amber);
+  --geometry-node-asset: var(--geometry-reference-blue);
+  --geometry-node-reference: rgba(240, 236, 227, 0.7);
+  --geometry-selection-glow: rgba(255, 200, 87, 0.22);
+  --geometry-reference-glow: rgba(79, 209, 255, 0.18);
+  --geometry-ring-thickness-primary: 1.5px;
+  --geometry-ring-thickness-secondary: 1px;
+  --geometry-vector-primary: 2px;
+  --geometry-vector-secondary: 1px;
+  --geometry-vector-dashed: 1px;
+  --geometry-ring-opacity-outer: 0.8;
+  --geometry-ring-opacity-inner: 0.25;
+  --geometry-label-primary: rgba(255, 255, 255, 0.92);
+  --geometry-label-secondary: rgba(255, 255, 255, 0.64);
+  --geometry-label-measurement: #4fd1ff;
+  --geometry-label-offset-xs: 0.35rem;
+  --geometry-label-offset-sm: 0.6rem;
+  --geometry-label-offset-md: 0.95rem;
+  --geometry-label-offset-lg: 1.3rem;
+  --panel-blur: 12px;
+  --mode-flat-background:
+    radial-gradient(circle at 50% 35%, rgba(79, 209, 255, 0.08), rgba(8, 9, 7, 0.78) 64%),
+    linear-gradient(180deg, rgba(8, 10, 11, 1) 0%, rgba(5, 7, 9, 1) 100%);
+  --mode-eo-background:
+    radial-gradient(circle at 50% 18%, rgba(79, 209, 255, 0.28), transparent 32%),
+    linear-gradient(180deg, rgba(8, 18, 23, 1) 0%, rgba(10, 12, 12, 1) 54%, rgba(7, 8, 8, 1) 100%);
+  --mode-site-background:
+    radial-gradient(circle at 50% 48%, rgba(255, 200, 87, 0.08) 0%, rgba(10, 12, 10, 0.94) 42%, rgba(5, 6, 5, 1) 100%);
+  --mode-theater-background:
+    radial-gradient(circle at 50% 52%, rgba(79, 209, 255, 0.08), rgba(8, 9, 8, 1) 60%),
+    radial-gradient(circle at 25% 72%, rgba(255, 200, 87, 0.12), transparent 30%);
+  --mode-ops-background:
+    radial-gradient(circle at 50% 45%, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 1) 70%);
 
   --font-display: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-body: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;

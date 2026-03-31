@@ -1,42 +1,42 @@
+import { useLocation } from "react-router-dom";
+import { SURFACE_CONFIG_BY_MODE } from "./workspace/config";
 import { FlatMapView, EOOverlayView, OpsWallView, Site3DView, Theater3DView } from "./workspace/SurfaceViews";
 import { formatBBox } from "./workspace/geo";
 import { WorkspaceShell } from "./workspace/WorkspaceShell";
 import { useWorkspaceState } from "./workspace/useWorkspaceState";
 
 export default function IntelligenceWorkspace() {
+  const location = useLocation();
   const {
-    features,
-    visibleFeatures,
     selectedFeature,
     comparedFeatures,
     activeBBox,
     dossierCards,
-    selectionAnchor,
-    selectionProjection,
-    selectionOblique,
-    incidentFeatures,
-    ringSizes,
+    geometryScene,
+    tasks,
+    missionThreads,
+    selectedTaskId,
     state,
     setSelectedId,
+    setSelectedTaskId,
     setQuery,
     setComparedIds,
     setVisibleLayers,
     setExtentMode,
     setWorkspaceMode,
+    createTask,
+    assignTask,
+    setTaskStatus,
+    attachEvidence,
+    attachCompare,
   } = useWorkspaceState();
+  const debugGeometry = import.meta.env.DEV && new URLSearchParams(location.search).get("debug") === "geometry";
 
   const surfaceProps = {
-    features,
-    visibleFeatures,
-    comparedIds: state.comparedIds,
     selectedFeature,
-    activeBBox,
-    selectionAnchor,
-    selectionProjection,
-    selectionOblique,
-    incidentFeatures,
-    ringSizes,
-    extentMode: state.extentMode,
+    geometryScene,
+    surfaceConfig: SURFACE_CONFIG_BY_MODE[state.workspaceMode],
+    debugGeometry,
     setSelectedId,
   };
 
@@ -70,8 +70,11 @@ export default function IntelligenceWorkspace() {
       comparedIds={state.comparedIds}
       comparedFeatures={comparedFeatures}
       dossierCards={dossierCards}
+      tasks={tasks}
+      missionThreads={missionThreads}
+      selectedTaskId={selectedTaskId}
       visibleLayers={state.visibleLayers}
-      visibleFeaturesCount={visibleFeatures.length}
+      visibleFeaturesCount={dossierCards.length}
       activeBBox={formatBBox(activeBBox)}
       extentMode={state.extentMode}
       workspaceMode={state.workspaceMode}
@@ -80,8 +83,14 @@ export default function IntelligenceWorkspace() {
       onToggleCompare={toggleCompare}
       onToggleLayer={toggleLayer}
       onSelectFeature={setSelectedId}
+      onSelectTask={setSelectedTaskId}
       onSetExtentMode={setExtentMode}
       onSetWorkspaceMode={setWorkspaceMode}
+      onCreateTask={createTask}
+      onAssignTask={assignTask}
+      onSetTaskStatus={setTaskStatus}
+      onAttachEvidence={attachEvidence}
+      onAttachCompare={attachCompare}
     />
   );
 }

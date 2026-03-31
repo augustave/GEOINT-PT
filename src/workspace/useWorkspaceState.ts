@@ -1,7 +1,8 @@
 import { useMemo, useState } from "react";
-import { entityLayer, featureMatchesQuery, computeFeatureBBox, mergeBBoxes, computeCollectionBBox, expandBBox, projectOblique, projectPoint } from "./geo";
+import { buildGeometryScene, computeCollectionBBox, computeFeatureBBox, entityLayer, expandBBox, featureMatchesQuery, mergeBBoxes } from "./geo";
 import { createExampleCollection } from "./mockData";
-import type { BBox, Feature, PointFeature, WorkspaceMode, ExtentMode, Position, WorkspaceState } from "./types";
+import { buildMissionThreads, createTaskFromObject } from "./tasking";
+import type { BBox, CreateTaskInput, ExtentMode, Feature, PointFeature, TaskModel, TaskStatus, WorkspaceMode, WorkspaceState } from "./types";
 
 const PRIORITY_RANK = {
   critical: 4,
@@ -27,6 +28,8 @@ export function useWorkspaceState() {
   });
   const [extentMode, setExtentMode] = useState<ExtentMode>("operational");
   const [workspaceMode, setWorkspaceMode] = useState<WorkspaceMode>("flat-map");
+  const [tasks, setTasks] = useState<TaskModel[]>([]);
+  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
 
   const visibleFeatures = useMemo(() => {
     return features.filter((feature) => visibleLayers[entityLayer(feature.properties.entityType)] && featureMatchesQuery(feature, query));
@@ -57,20 +60,89 @@ export function useWorkspaceState() {
     return [...visibleFeatures].sort((a, b) => PRIORITY_RANK[b.properties.priority] - PRIORITY_RANK[a.properties.priority]);
   }, [visibleFeatures]);
 
-  const selectionAnchor: Position =
-    selectedFeature.geometry.type === "Point"
-      ? selectedFeature.geometry.coordinates
-      : selectedFeature.geometry.type === "LineString"
-        ? selectedFeature.geometry.coordinates[Math.floor(selectedFeature.geometry.coordinates.length / 2)]
-        : selectedFeature.geometry.coordinates[0][0];
-
-  const selectionProjection = projectPoint(selectionAnchor, activeBBox);
-  const selectionOblique = projectOblique(selectionAnchor, activeBBox);
   const incidentFeatures = visibleFeatures.filter(
     (feature): feature is PointFeature =>
       isPointFeature(feature) && (feature.properties.entityType === "incident" || feature.properties.entityType === "site")
   );
-  const ringSizes = [10, 18, 28, 38, 52];
+  const geometryScene = useMemo(
+    () =>
+      buildGeometryScene({
+        selectedFeature,
+        visibleFeatures: visibleFeatures.length ? visibleFeatures : features,
+        comparedIds,
+        bbox: activeBBox,
+        bboxSource: extentMode,
+      }),
+    [activeBBox, comparedIds, extentMode, features, selectedFeature, visibleFeatures]
+  );
+  const missionThreads = useMemo(() => buildMissionThreads(tasks), [tasks]);
+
+  const createTask = (taskInput: CreateTaskInput) => {
+    if (!selectedFeature) {
+      return null;
+    }
+
+    const task = createTaskFromObject({
+      input: taskInput,
+      sourceFeature: selectedFeature,
+      bboxSnapshot: geometryScene.bbox,
+      surfaceOrigin: workspaceMode,
+    });
+
+    setTasks((prev) => [task, ...prev]);
+    setSelectedTaskId(task.id);
+    return task;
+  };
+
+  const updateTask = (taskId: string, patch: Partial<Omit<TaskModel, "id" | "source_object_id" | "bbox_snapshot" | "surface_origin" | "created_at">>) => {
+    setTasks((prev) =>
+      prev.map((task) =>
+        task.id === taskId
+          ? {
+              ...task,
+              ...patch,
+              updated_at: new Date().toISOString(),
+            }
+          : task
+      )
+    );
+  };
+
+  const assignTask = (taskId: string, assignee: string | null) => {
+    updateTask(taskId, { assignee });
+  };
+
+  const setTaskStatus = (taskId: string, status: TaskStatus) => {
+    updateTask(taskId, { status });
+  };
+
+  const attachEvidence = (taskId: string, evidenceId: string) => {
+    setTasks((prev) =>
+      prev.map((task) =>
+        task.id === taskId
+          ? {
+              ...task,
+              evidence_ids: task.evidence_ids.includes(evidenceId) ? task.evidence_ids : [...task.evidence_ids, evidenceId],
+              updated_at: new Date().toISOString(),
+            }
+          : task
+      )
+    );
+  };
+
+  const attachCompare = (taskId: string, compareId: string) => {
+    setTasks((prev) =>
+      prev.map((task) =>
+        task.id === taskId
+          ? {
+              ...task,
+              compare_ids: task.compare_ids.includes(compareId) ? task.compare_ids : [...task.compare_ids, compareId],
+              updated_at: new Date().toISOString(),
+            }
+          : task
+      )
+    );
+  };
 
   const state: WorkspaceState = {
     selectedId,
@@ -88,17 +160,24 @@ export function useWorkspaceState() {
     comparedFeatures,
     activeBBox,
     dossierCards,
-    selectionAnchor,
-    selectionProjection,
-    selectionOblique,
     incidentFeatures,
-    ringSizes,
+    geometryScene,
+    tasks,
+    missionThreads,
+    selectedTaskId,
     state,
     setSelectedId,
+    setSelectedTaskId,
     setQuery,
     setComparedIds,
     setVisibleLayers,
     setExtentMode,
     setWorkspaceMode,
+    createTask,
+    updateTask,
+    assignTask,
+    setTaskStatus,
+    attachEvidence,
+    attachCompare,
   };
 }

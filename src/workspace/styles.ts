@@ -1,4 +1,4 @@
-export const PANEL_BASE = "bg-[rgba(10,10,10,0.72)] backdrop-blur-[12px] border border-white/[0.06]";
+export const PANEL_BASE = "bg-panel-bg backdrop-blur-panel border border-panel-border";
 
 export const CLS = {
   narrativeCard: `min-w-0 rounded-[24px] ${PANEL_BASE} p-6 shadow-2xl`,
@@ -6,7 +6,7 @@ export const CLS = {
   surfaceCard: `min-w-0 rounded-[22px] ${PANEL_BASE} p-5`,
   surfaceOverlayCard: `rounded-[12px] ${PANEL_BASE} px-3 py-2`,
   objectCardBase: "min-w-0 rounded-lg border p-3 transition cursor-pointer",
-  objectCardSelected: "min-w-0 rounded-lg border border-[#d1b16d] bg-[#232116]/90 backdrop-blur-md p-3 shadow-[0_0_0_1px_rgba(209,177,109,0.2)] transition cursor-pointer",
+  objectCardSelected: "min-w-0 rounded-lg border border-geometry-active bg-[color:rgba(42,29,18,0.92)] backdrop-blur-md p-3 shadow-[0_0_0_1px_var(--geometry-selection-glow)] transition cursor-pointer",
   objectCardDefault: `min-w-0 rounded-lg border border-zinc-800/50 bg-[#141510]/80 backdrop-blur-sm p-3 transition cursor-pointer hover:border-zinc-700`,
   dossierCard: `min-w-0 rounded-xl ${PANEL_BASE} p-4`,
   dossierSection: "min-w-0 rounded-lg border border-zinc-800/60 bg-[#181914]/80 p-3",

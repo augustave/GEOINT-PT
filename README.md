@@ -1,92 +1,166 @@
 # GEOINT-PT
 
-GEOINT-PT is a React and Vite prototype for a multi-surface geospatial intelligence workspace. The repository combines a marketing-style landing page with a routed intelligence workspace that demonstrates how one operational object can preserve identity across multiple visual surfaces without discarding geometry-driven behavior.
+GEOINT-PT is a React and Vite prototype for a multi-surface geospatial intelligence workspace. The repository combines a branded landing page with a routed operational workspace that keeps one object, one extent, and one geometry model coherent across five distinct visual surfaces.
 
-This project is best understood as a working design-and-code prototype, not a production application. It is intended to explore a field-archive interface language, shared object continuity, and spatial truth across map, EO-style, pseudo-3D, and command-wall views.
+The current codebase is not just a visual mockup. It now includes a governed geometry layer, semantic design tokens, development-only QA surfaces, and automated checks intended to make visual drift harder to introduce.
 
 <img width="1715" height="929" alt="Screenshot 2026-03-25 at 5 25 52 PM" src="https://github.com/user-attachments/assets/df0899dd-5cd8-40a9-afeb-f1cea5da42b7" />
 
 ## Project Thesis
 
-Most geospatial products break down in one of two ways:
+Most geospatial products fail in one of two directions:
 
-- they are data-rich but visually generic
-- they are visually expressive but spatially untrustworthy
+- they are data-rich but visually interchangeable
+- they are visually dramatic but spatially untrustworthy
 
-GEOINT-PT aims to sit between those extremes.
+GEOINT-PT is trying to hold the middle ground:
 
-The current prototype is built around four core invariants:
+- strong visual identity
+- geometry-derived behavior
+- persistent object continuity
+- distinct surface roles without fragmenting the underlying state model
 
-- `Selection`: the active object should remain the same object across all surfaces
-- `Compare`: pinned objects should survive mode changes and remain available for contrast
-- `BBox`: framing should derive from geometry and current scope, not arbitrary screen placement
-- `Dossier`: each view should remain connected to an intelligence-style detail and review model
+The system is organized around four invariants:
 
-## What Is in the App Today
+- `Selection`: the active object remains the same object across all surfaces
+- `Compare`: pinned objects survive mode changes and stay available for contrast
+- `BBox`: framing derives from geometry and current scope, not arbitrary screen placement
+- `Dossier`: every surface stays connected to an intelligence-style review context
 
-The app currently exposes two routed experiences:
+## Current State
 
-- `/`: a marketing-style homepage that presents the product story, proof points, and screen-family framing
-- `/workspace`: the intelligence workspace prototype
+The app currently exposes three routes:
 
-The workspace currently supports:
+- `/`: marketing homepage and product-story layer
+- `/workspace`: primary intelligence workspace
+- `/workspace/qa`: development-only surface QA dashboard
+
+The workspace supports:
 
 - free-text query filtering
 - layer visibility toggles
 - centralized selected-object state
 - compare pinning for secondary objects
-- extent switching between operational, selection, and compare scopes
-- a right-side dossier/detail context
+- extent switching between `operational`, `selection`, and `compare`
+- a persistent dossier/detail context
 - five distinct screen families with shared interaction behavior
+- a shared geometry scene with ring, vector, and label contracts
+- a development-only geometry debug overlay via `?debug=geometry`
+
+## What Changed In This Iteration
+
+The repository now includes a surface unification layer that moves core visual and geometric decisions out of ad hoc view code and into shared contracts.
+
+New system capabilities include:
+
+- semantic geometry tokens for reference blue, active amber, neutral muted, ring thickness, vector thickness, label offsets, and per-mode lighting
+- per-mode `SurfaceConfig` definitions for lighting, camera, overlays, grid usage, and scene behavior
+- shared geometry primitives for `Panel`, `Ring`, `Vector`, `Node`, and anchored labels
+- a derived `GeometryScene` with:
+  - `RingModel`
+  - anchored vectors
+  - anchored labels
+  - integrity scoring
+- a dev-only QA dashboard that renders all five surfaces side-by-side
+- linting and automated tests that guard the geometry/rendering layer
 
 ## Screen Families
 
-The workspace is organized around five surface types. They are intentionally different in visual language, but they share the same behavior spine.
+The workspace is intentionally organized into five different surfaces. They are meant to feel different, but not contradictory.
 
 ### 1. Flat Map
 
 Primary role: geometry-truth surface
 
-- renders points, lines, and polygons from mock GeoJSON-like features
-- computes view framing from the active bounding box
-- highlights selection and compare state
-- acts as the most review-heavy, geometry-led representation
+- renders points, lines, and polygons from the mock GeoJSON-like collection
+- computes visible framing from the active bounding box
+- acts as the strictest baseline for object position and extent truth
+- keeps the selection ring and bbox-derived overlays tied to the shared scene
 
 ### 2. EO Overlay
 
 Primary role: exploitation surface
 
 - presents an imagery-inspired overhead composition
-- adds markup, target boxes, directional cues, and measurement references
-- keeps the selected object linked back to the same shared workspace state
+- adds target boxes, measurement cues, reference vectors, and selection markup
+- uses the same anchor and color semantics as the other surfaces
+- treats blue as reference and amber as active/selected
 
 ### 3. Site 3D
 
 Primary role: local context surface
 
-- uses a pseudo-oblique projection for site-level context
-- keeps selected-object framing visible
-- preserves local task and object continuity
+- uses a pseudo-oblique projection for site-level framing
+- keeps local labels, markers, and ring cues snapped to projected geometry
+- emphasizes local task-asset context rather than pure map review
 
 ### 4. Theater 3D
 
 Primary role: mission geometry surface
 
-- renders range rings, vectors, and broader operational relationships
-- uses oblique projection helpers rather than arbitrary placement
-- emphasizes tasking and theater-scale context
+- renders a shared fixed-step ring model
+- renders anchored vectors instead of freehand lines
+- exposes the scale proof directly in the view
+- is the clearest expression of the shared mission geometry scene
 
 ### 5. Ops Wall
 
 Primary role: supervisory surface
 
-- presents a command-wall style layout
-- frames the current selected mission object in an aggregate operational view
-- is designed as a monitoring and synthesis surface rather than a pure map
+- presents a command-wall style aggregate view
+- reuses the same mission geometry truth as theater mode
+- frames the selected object inside a monitoring and synthesis surface
+- is intentionally not a pure map
+
+## Unified Geometry System
+
+The current workspace no longer relies on view-specific geometry assumptions alone. The main geometry layer lives in [src/workspace/geo.ts](/Users/taoconrad/Dev/GitHub%204/GEOINT-PT/src/workspace/geo.ts) and [src/workspace/types.ts](/Users/taoconrad/Dev/GitHub%204/GEOINT-PT/src/workspace/types.ts).
+
+### Core Concepts
+
+- `SurfaceConfig`: per-mode lighting, camera, grid, overlays, and annotation density
+- `RingModel`: center, count, step size, radii, and opacity falloff
+- `AnchoredVector`: vectors with explicit start and end anchor kinds
+- `AnchoredLabel`: labels snapped to node centers, vector midpoints, or ring tangents
+- `GeometryScene`: the derived mission-geometry package used across surfaces
+- `IntegrityScore`: per-category scoring plus violation reporting
+
+### Geometry Rules
+
+The current implementation enforces these ideas:
+
+- rings derive from actual radii, not arbitrary visual circles
+- vectors attach to explicit anchors such as:
+  - nodes
+  - ring intersections
+  - bbox edges
+- labels use tokenized offsets rather than eyeballed placement
+- active/selected geometry uses amber semantics
+- reference geometry uses blue semantics
+- scene-specific rendering still preserves one underlying geometry model
+
+### Integrity Score
+
+The geometry scene produces an integrity score with category breakdowns for:
+
+- anchors
+- rings
+- vectors
+- labels
+- color
+- scale
+- depth
+
+The current thresholds are:
+
+- `>= 98`: instrument-grade
+- `95-97`: production-ready
+- `90-94`: high quality but not locked
+- `< 90`: needs correction
 
 ## Interaction Model
 
-The current implementation keeps a small centralized state model and derives most visible behavior from it.
+The workspace keeps a small centralized state model in [src/workspace/useWorkspaceState.ts](/Users/taoconrad/Dev/GitHub%204/GEOINT-PT/src/workspace/useWorkspaceState.ts) and derives most visible behavior from it.
 
 Shared state includes:
 
@@ -97,7 +171,7 @@ Shared state includes:
 - `extentMode`
 - `workspaceMode`
 
-From that state, the workspace derives:
+Derived state includes:
 
 - visible features after query and layer filtering
 - selected feature fallback behavior
@@ -105,23 +179,89 @@ From that state, the workspace derives:
 - collection, selection, and compare bounding boxes
 - the active bbox used for framing and projection
 - dossier ordering by priority
-- projected anchor points for flat and oblique surfaces
+- selected anchor points for flat and oblique views
+- the shared `GeometryScene`
 
-## Geometry and Spatial Logic
+## Routing And Debug Views
 
-The prototype intentionally keeps core spatial helpers in the codebase so the UI remains tied to real geometric reasoning.
+### `/workspace`
 
-Current helpers include:
+This is the main operational route. It renders one active screen family inside the shared shell.
 
-- feature and collection bounding box calculation
-- bbox merging and padding
-- flat 2D projection into SVG/screen percentages
-- oblique projection for pseudo-3D surfaces
-- SVG path generation for lines and polygons
-- geodesic destination-point math
-- sampled-circle generation for ring geometry
+### `/workspace?debug=geometry`
 
-This matters because the project is explicitly trying to avoid a common failure mode in speculative geospatial UI work: making the product look operational while placing features arbitrarily.
+In development, this enables the geometry debug overlay on the main workspace surface. The overlay shows:
+
+- integrity summary
+- score breakdown
+- anchor markers
+- rule violations
+
+### `/workspace/qa`
+
+This is a development-only QA route. It renders all five surface families side-by-side with:
+
+- shared geometry score
+- per-surface configuration context
+- debug overlay active on every surface
+- Playwright screenshot coverage
+
+The route is excluded in production builds.
+
+## Design Tokens And Styling
+
+Semantic visual tokens live primarily in:
+
+- [design_spec_package/css_variables.css](/Users/taoconrad/Dev/GitHub%204/GEOINT-PT/design_spec_package/css_variables.css)
+- [tailwind.config.js](/Users/taoconrad/Dev/GitHub%204/GEOINT-PT/tailwind.config.js)
+
+The token layer now covers:
+
+- workspace surface backgrounds
+- panel background and border
+- geometry reference blue and active amber
+- neutral geometry tones
+- ring and vector stroke widths
+- selection and reference glow behavior
+- label contrast and offset tokens
+- per-mode background lighting definitions
+
+The styling goal is not generic theme consistency. It is semantic consistency:
+
+- blue means reference
+- amber means selected or active
+- geometry stroke hierarchy is shared across modes
+- panels remain readable regardless of mode lighting
+
+## Governance And Quality Controls
+
+The repo now includes explicit enforcement and verification layers.
+
+### ESLint
+
+[eslint.config.js](/Users/taoconrad/Dev/GitHub%204/GEOINT-PT/eslint.config.js) adds workspace-specific rules that:
+
+- forbid raw SVG geometry elements inside workspace surface files
+- forbid hard-coded geometry color literals in the geometry/rendering layer
+
+The intent is to force new surface behavior through shared primitives instead of bypassing the system.
+
+### Vitest
+
+[src/workspace/geo.test.ts](/Users/taoconrad/Dev/GitHub%204/GEOINT-PT/src/workspace/geo.test.ts) covers:
+
+- fixed-step ring generation
+- anchored vector generation
+- tokenized label generation
+- integrity-scene creation and score threshold behavior
+
+### Playwright
+
+[tests/workspace-qa.spec.ts](/Users/taoconrad/Dev/GitHub%204/GEOINT-PT/tests/workspace-qa.spec.ts) captures a baseline screenshot for the dev QA route and ensures:
+
+- the QA dashboard renders
+- all surfaces mount
+- the debug overlay is present
 
 ## Tech Stack
 
@@ -131,9 +271,12 @@ This matters because the project is explicitly trying to avoid a common failure 
 - React Router
 - Framer Motion
 - Lucide React
-- Tailwind CSS utility styling
+- Tailwind CSS
+- ESLint
+- Vitest
+- Playwright
 
-There is no backend, persistence layer, map engine, imagery pipeline, or real 3D terrain integration in the current prototype.
+There is still no backend, persistence layer, real map engine, imagery pipeline, or true 3D terrain stack in the current prototype.
 
 ## Repository Structure
 
@@ -146,11 +289,14 @@ There is no backend, persistence layer, map engine, imagery pipeline, or real 3D
 │   ├── index.css
 │   ├── main.tsx
 │   └── workspace/
-│       ├── WorkspaceShell.tsx
 │       ├── SurfaceViews.tsx
+│       ├── WorkspaceQaPage.tsx
+│       ├── WorkspaceShell.tsx
 │       ├── cardPrimitives.tsx
 │       ├── config.tsx
+│       ├── geo.test.ts
 │       ├── geo.ts
+│       ├── geometryPrimitives.tsx
 │       ├── mockData.ts
 │       ├── styles.ts
 │       ├── types.ts
@@ -161,37 +307,29 @@ There is no backend, persistence layer, map engine, imagery pipeline, or real 3D
 │   ├── css_variables.css
 │   ├── layout_structure.json
 │   └── optimized_copy_deck.json
+├── tests/
+│   ├── workspace-qa.spec.ts
+│   └── workspace-qa.spec.ts-snapshots/
+├── eslint.config.js
+├── playwright.config.ts
+├── vitest.config.ts
 ├── README.md
-├── readme_intelligence_workspace.md
-├── prd_intelligence_workspace_screen_family_completion.md
-├── intelligence_workspace.jsx
-├── field_archive_preview.jsx
-├── geo_intelligence_core.ts
-└── semantic_contracts_pack.ts
+├── vercel.json
+└── package.json
 ```
 
-### Key Files
+## Key Files
 
-- `src/App.tsx`: top-level router for the landing page and workspace route
-- `src/MarketingHomepage.tsx`: branded homepage and product narrative layer
-- `src/IntelligenceWorkspace.tsx`: workspace orchestration and surface switching
-- `src/workspace/useWorkspaceState.ts`: central derived state and interaction spine
-- `src/workspace/WorkspaceShell.tsx`: shell layout, controls, and dossier framing
-- `src/workspace/SurfaceViews.tsx`: the five main surface renderers
-- `src/workspace/geo.ts`: bbox, projection, and geometry helpers
-- `src/workspace/mockData.ts`: example feature collection used by the prototype
-- `design_spec_package/`: design tokens, copy, assets, and spec materials used by the landing experience
-
-## Prototype Inputs and Supporting Artifacts
-
-This repository still includes several source artifacts from the design and salvage process. They are useful context when extending the project:
-
-- `readme_intelligence_workspace.md`: a longer narrative brief describing the product thesis and workspace principles
-- `prd_intelligence_workspace_screen_family_completion.md`: implementation-oriented handoff for restoring and modularizing the workspace
-- `intelligence_workspace.jsx`: original large prototype artifact
-- `field_archive_preview.jsx`: prior field-archive style reference
-- `geo_intelligence_core.ts`: earlier geo/math logic source material
-- `semantic_contracts_pack.ts`: semantic/state concepts that informed the workspace model
+- [src/App.tsx](/Users/taoconrad/Dev/GitHub%204/GEOINT-PT/src/App.tsx): top-level router for marketing, workspace, and dev QA routing
+- [src/IntelligenceWorkspace.tsx](/Users/taoconrad/Dev/GitHub%204/GEOINT-PT/src/IntelligenceWorkspace.tsx): workspace orchestration and surface prop assembly
+- [src/workspace/useWorkspaceState.ts](/Users/taoconrad/Dev/GitHub%204/GEOINT-PT/src/workspace/useWorkspaceState.ts): central derived state and geometry-scene creation
+- [src/workspace/config.tsx](/Users/taoconrad/Dev/GitHub%204/GEOINT-PT/src/workspace/config.tsx): screen-family specs, semantic tokens, and `SurfaceConfig` definitions
+- [src/workspace/geo.ts](/Users/taoconrad/Dev/GitHub%204/GEOINT-PT/src/workspace/geo.ts): bbox math, projections, ring/vector/label derivation, and integrity scoring
+- [src/workspace/geometryPrimitives.tsx](/Users/taoconrad/Dev/GitHub%204/GEOINT-PT/src/workspace/geometryPrimitives.tsx): shared geometry and debug rendering primitives
+- [src/workspace/SurfaceViews.tsx](/Users/taoconrad/Dev/GitHub%204/GEOINT-PT/src/workspace/SurfaceViews.tsx): the five governed surface renderers
+- [src/workspace/WorkspaceShell.tsx](/Users/taoconrad/Dev/GitHub%204/GEOINT-PT/src/workspace/WorkspaceShell.tsx): shell layout, controls, dossier framing, and mode switching
+- [src/workspace/WorkspaceQaPage.tsx](/Users/taoconrad/Dev/GitHub%204/GEOINT-PT/src/workspace/WorkspaceQaPage.tsx): development-only QA dashboard
+- [design_spec_package/css_variables.css](/Users/taoconrad/Dev/GitHub%204/GEOINT-PT/design_spec_package/css_variables.css): semantic CSS token source of truth
 
 ## Getting Started
 
@@ -206,23 +344,43 @@ This repository still includes several source artifacts from the design and salv
 npm install
 ```
 
-### Start the Development Server
+### Start The Development Server
 
 ```bash
 npm run dev
 ```
 
-The Vite dev server will print the local URL, typically `http://localhost:5173`.
+The default Vite URL is typically `http://localhost:5173`.
 
-### Build for Production
+### Run Lint
+
+```bash
+npm run lint
+```
+
+### Run Unit Tests
+
+```bash
+npm run test
+```
+
+### Run Visual QA
+
+```bash
+npm run test:visual
+```
+
+This uses Playwright and the `/workspace/qa` route.
+
+### Build For Production
 
 ```bash
 npm run build
 ```
 
-This runs TypeScript checking with `tsc --noEmit` and then produces a Vite production build.
+This runs TypeScript checking with `tsc --noEmit` and then builds the Vite app.
 
-### Preview the Production Build
+### Preview The Production Build
 
 ```bash
 npm run preview
@@ -230,16 +388,18 @@ npm run preview
 
 ## Deployment Notes
 
-The repository includes a `vercel.json` rewrite that routes all requests to `index.html`. That is necessary because the app uses client-side routing for:
+The repo includes [vercel.json](/Users/taoconrad/Dev/GitHub%204/GEOINT-PT/vercel.json) to preserve SPA fallback behavior. That matters because the app uses client-side routing for:
 
 - `/`
 - `/workspace`
 
-Any static host used for deployment needs equivalent SPA fallback behavior.
+The dev-only route `/workspace/qa` is guarded in the app router and is not exposed in production builds.
 
-## How the Workspace Data Works
+Any static host needs equivalent SPA fallback behavior for the production routes.
 
-The current feature collection uses simplified GeoJSON-style objects with:
+## How The Workspace Data Works
+
+The current sample dataset in [src/workspace/mockData.ts](/Users/taoconrad/Dev/GitHub%204/GEOINT-PT/src/workspace/mockData.ts) uses a simplified GeoJSON-like shape:
 
 - `type`
 - `geometry`
@@ -267,29 +427,29 @@ Important property fields currently modeled:
 - `summary`
 - `timeLabel`
 
-If you want to replace the sample data with a richer dataset, the safest first step is to preserve this shape and expand incrementally rather than rewriting the workspace assumptions all at once.
+If you replace the sample data, preserve this shape first and expand incrementally. The current workspace assumptions, selection flow, and geometry-scene derivation all depend on it.
 
-## Extending the Prototype
+## Development Guidance
 
-Reasonable next steps for the repository:
-
-- replace `mockData.ts` with a loader or API-backed source while preserving the current feature shape
-- introduce a real map engine such as MapLibre or deck.gl for the flat-map surface
-- back the EO surface with real image frames or tiled raster sources
-- replace pseudo-oblique rendering with a proper 3D scene stack if the product direction warrants it
-- add persistence for selection history, compare sets, and session context
-- formalize the design tokens and component system shared by the landing page and workspace shell
-
-When extending the project, preserve the existing behavior order:
+When extending the prototype, preserve the current implementation order:
 
 1. object continuity first
 2. geometry truth second
 3. screen-family distinctiveness third
 4. visual polish after the first three remain intact
 
+Good next steps:
+
+- replace `mockData.ts` with a loader or API-backed source while preserving feature shape
+- introduce a real map engine such as MapLibre or deck.gl for flat-map mode
+- back EO mode with real image frames or tiled raster sources
+- replace pseudo-oblique rendering with a real 3D scene stack if needed
+- add persistence for selection history, compare sets, and session context
+- connect integrity scoring to CI reporting if the repo moves beyond prototype status
+
 ## Current Limitations
 
-This repository is still a prototype. It does not currently provide:
+This is still a prototype. It does not currently provide:
 
 - authenticated access
 - live intelligence feeds
@@ -299,15 +459,23 @@ This repository is still a prototype. It does not currently provide:
 - imagery ingestion
 - terrain or globe rendering
 - persistence across sessions
-- production hardening, observability, or security controls
+- production observability, audit logging, or hardened security controls
 
-## Development Notes
+The current QA and governance layer improves local rigor, but it does not make the app an operational platform.
 
-- The workspace route is the main implementation artifact for behavior testing.
-- The landing page is a product-story layer, not the core application.
-- The current data is intentionally small and hand-authored to make behavior validation easy.
-- The prototype is strongest when treated as a systems and interaction reference, not as a finished operational platform.
+## Supporting Artifacts
+
+The repository still includes several source artifacts from the earlier design and salvage process:
+
+- `readme_intelligence_workspace.md`
+- `prd_intelligence_workspace_screen_family_completion.md`
+- `intelligence_workspace.jsx`
+- `field_archive_preview.jsx`
+- `geo_intelligence_core.ts`
+- `semantic_contracts_pack.ts`
+
+These remain useful as thesis and lineage documents, but the current implementation source of truth is the `src/` tree.
 
 ## License
 
-No license file is currently present in this repository. Add one before distributing or open-sourcing the project beyond private/internal use.
+No license file is currently present in this repository. Add one before distributing or open-sourcing the project beyond private or internal use.

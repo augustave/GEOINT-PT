@@ -29,6 +29,18 @@ export default {
           alert: "var(--accent-alert)",
           verified: "var(--accent-verified)",
         },
+        geometry: {
+          reference: "var(--geometry-reference-blue)",
+          active: "var(--geometry-active-amber)",
+          neutral: "var(--geometry-neutral-muted)",
+          incident: "var(--geometry-node-incident)",
+          asset: "var(--geometry-node-asset)",
+          marker: "var(--geometry-node-reference)",
+        },
+        panel: {
+          bg: "var(--color-panel-bg)",
+          border: "var(--color-panel-border)",
+        },
       },
       /* ── Spacing scale (4–64) ── */
       spacing: {
@@ -51,6 +63,16 @@ export default {
         "workspace-xl": "0 24px 80px rgba(0, 0, 0, 0.38)",
         glow: "0 0 0 1px var(--surface-glow)",
         "glow-strong": "0 0 0 1px var(--surface-glow-strong)",
+      },
+      borderWidth: {
+        ringPrimary: "var(--geometry-ring-thickness-primary)",
+        ringSecondary: "var(--geometry-ring-thickness-secondary)",
+        vectorPrimary: "var(--geometry-vector-primary)",
+        vectorSecondary: "var(--geometry-vector-secondary)",
+        vectorDashed: "var(--geometry-vector-dashed)",
+      },
+      backdropBlur: {
+        panel: "var(--panel-blur)",
       },
       /* ── Typography ── */
       fontFamily: {
