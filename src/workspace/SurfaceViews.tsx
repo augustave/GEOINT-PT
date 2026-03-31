@@ -6,7 +6,7 @@ import type { SurfaceViewProps, SurfaceRenderScene, WorkspaceMode } from "./type
 function SurfaceCaption(props: { eyebrow: string; title: string; accentClass?: string }) {
   const { eyebrow, title, accentClass } = props;
   return (
-    <div className="pointer-events-none absolute left-4 top-4 z-20">
+    <div className="pointer-events-none absolute left-5 top-5 z-20">
       <Panel className="px-3 py-2">
         <div className={accentClass ?? CLS.surfaceMeta}>{eyebrow}</div>
         <div className={CLS.surfaceTitle}>{title}</div>
@@ -106,7 +106,7 @@ export function FlatMapView(props: SurfaceViewProps) {
       <SurfaceCaption eyebrow="Truth Surface" title="BBox Fit / Geometry-Led" />
       <SurfaceTelemetry
         title="Reference Logic"
-        className="bottom-4 left-4"
+        className="bottom-5 left-5"
         values={[
           ["Camera", props.surfaceConfig.camera],
           ["Grid", props.surfaceConfig.gridVisible ? "VISIBLE" : "HIDDEN"],
@@ -131,7 +131,7 @@ export function EOOverlayView(props: SurfaceViewProps) {
       <SurfaceCaption eyebrow="EO Exploitation" title={props.selectedFeature.properties.labelPrimary} accentClass="text-[10px] uppercase tracking-[0.18em] text-geometry-reference/80" />
       <SurfaceTelemetry
         title="Sensor Feed"
-        className="right-4 top-4 min-w-[180px]"
+        className="right-5 top-5 min-w-[180px]"
         values={[
           ["Track", props.selectedFeature.properties.id],
           ["Lighting", props.surfaceConfig.lighting],
@@ -140,7 +140,7 @@ export function EOOverlayView(props: SurfaceViewProps) {
       />
       <SurfaceTelemetry
         title="Directional Gate"
-        className="bottom-4 left-4 min-w-[190px]"
+        className="bottom-5 left-5 min-w-[190px]"
         values={[
           ["Reference", "BLUE / FRAME"],
           ["Selection", "AMBER / LOCK"],
@@ -164,7 +164,7 @@ export function Site3DView(props: SurfaceViewProps) {
       <SurfaceCaption eyebrow="Local Surface" title="Oblique Site Inspection" />
       <SurfaceTelemetry
         title="Local Frame"
-        className="right-4 top-4 min-w-[180px]"
+        className="right-5 top-5 min-w-[180px]"
         values={[
           ["Selected", props.selectedFeature.properties.id],
           ["Axis", props.surfaceConfig.camera.toUpperCase()],
@@ -188,14 +188,14 @@ export function Theater3DView(props: SurfaceViewProps) {
       <SurfaceCaption eyebrow="Theater Surface" title="Mission Geometry / Vectors" />
       <SurfaceTelemetry
         title="Theater Grid"
-        className="right-4 top-4 min-w-[180px]"
+        className="right-5 top-5 min-w-[180px]"
         values={[
           ["Selected", props.selectedFeature.properties.id],
           ["Rings", `${scene.rings.length} / sync`],
           ["Vectors", `${scene.vectors.length} / active`],
         ]}
       />
-      <div className="pointer-events-none absolute bottom-4 left-4">
+      <div className="pointer-events-none absolute bottom-5 left-5">
         <Panel className="px-3 py-2">
           <div className={CLS.surfaceMeta}>Scale Logic</div>
           <div className="mt-2 flex gap-4 text-[11px] font-mono text-zinc-300">

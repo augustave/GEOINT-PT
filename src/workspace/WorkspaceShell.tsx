@@ -240,19 +240,6 @@ function UnifiedTopBar(props: SharedShellProps) {
         </div>
       </div>
 
-      <div className="mt-3 flex items-center justify-between border-t border-zinc-800/50 pt-2.5">
-        <div className="flex items-center gap-3">
-          <div className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#ef8f45]">
-            {currentSurface.name.toUpperCase()} · {currentSurface.geometryBehavior.toUpperCase()}
-          </div>
-          <div className="text-[12px] text-zinc-400 hidden lg:block">
-            {currentSurface.question}
-          </div>
-        </div>
-        <div className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">
-          Intelligence Workspace v2.0
-        </div>
-      </div>
       <TaskComposer
         open={composerOpen}
         selectedFeature={selectedFeature}
@@ -303,7 +290,7 @@ function MapShell(props: SharedShellProps) {
       <div className="mx-auto min-h-screen w-full max-w-[1760px] p-3 md:p-4">
         <div className="overflow-hidden rounded-[30px] border border-zinc-800 bg-[#151611] shadow-workspace-xl">
           <UnifiedTopBar {...props} />
-          <div className="grid min-h-[calc(100vh-120px)] grid-cols-1 xl:grid-cols-[minmax(290px,22%)_minmax(0,54%)_minmax(320px,24%)]">
+          <div className="grid min-h-[calc(100vh-80px)] grid-cols-1 xl:grid-cols-[minmax(290px,22%)_minmax(0,54%)_minmax(320px,24%)]">
             <aside className="border-b border-zinc-800 bg-[#181914] p-4 xl:border-b-0 xl:border-r">
               <div className="mb-4 flex items-center gap-2">
                 {AUXILIARY_RAIL_ICONS.slice(0, 4).map((Icon, index) => (
@@ -409,7 +396,7 @@ function MapShell(props: SharedShellProps) {
                   </div>
               </div>
 
-              <div className="relative min-h-[540px] overflow-hidden xl:min-h-[calc(100vh-210px)]">
+              <div className="relative min-h-[540px] overflow-hidden xl:min-h-[calc(100vh-152px)]">
                 {renderMainSurface()}
               </div>
             </main>
@@ -516,7 +503,7 @@ function SceneShell(props: SharedShellProps) {
         <div className="overflow-hidden rounded-[30px] border border-zinc-800 bg-[#151611] shadow-workspace-xl">
           <UnifiedTopBar {...props} />
           
-          <div className="grid min-h-[calc(100vh-115px)] grid-cols-1 xl:grid-cols-[300px_minmax(0,1fr)_360px]">
+          <div className="grid min-h-[calc(100vh-80px)] grid-cols-1 xl:grid-cols-[300px_minmax(0,1fr)_360px]">
             <aside className="border-b border-zinc-800 bg-[#181914] p-4 xl:border-b-0 xl:border-r overflow-auto">
               <div className="flex items-center justify-between">
                 <div className={CLS.meta}>Operational Index</div>
@@ -576,16 +563,17 @@ function SceneShell(props: SharedShellProps) {
             </aside>
 
             <main className="min-w-0 border-b border-zinc-800 bg-[#0b0c09] xl:border-b-0 xl:border-r">
-              <div className="grid min-h-[64vh] grid-cols-1 lg:grid-cols-[minmax(0,1fr)_72px] xl:min-h-[calc(100vh-115px)]">
+              <div className="grid min-h-[64vh] grid-cols-1 lg:grid-cols-[minmax(0,1fr)_72px] xl:min-h-[calc(100vh-80px)]">
                 <div className="relative min-w-0 overflow-hidden border-b border-zinc-800 lg:border-b-0 lg:border-r">
                   <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-24 bg-[linear-gradient(180deg,rgba(5,6,5,0.72),transparent)]" />
                   <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-[linear-gradient(270deg,rgba(5,6,5,0.78),rgba(5,6,5,0.32),transparent)]" />
-                  <div className="absolute right-4 top-4 z-20 rounded-[12px] bg-[rgba(10,10,10,0.72)] p-2 backdrop-blur-[12px] border border-white/[0.06]">
+                  <div className="absolute right-5 top-5 z-20 rounded-[12px] bg-[rgba(10,10,10,0.72)] p-2 backdrop-blur-[12px] border border-white/[0.06]">
                     <ExtentButtons extentMode={extentMode} onSetExtentMode={onSetExtentMode} vertical compact />
                   </div>
                   {renderMainSurface()}
                 </div>
-                <aside className="flex items-center justify-between gap-2 bg-[#10110d] p-3 lg:flex-col lg:justify-start">
+                <aside className="flex items-center justify-between gap-3 bg-[#10110d] p-4 lg:flex-col lg:justify-start">
+                  <div className="flex items-center gap-3 lg:flex-col lg:gap-3">
                   {toolIcons.map(({ label, icon: Icon }, index) => (
                     <button
                       key={label}
@@ -599,7 +587,8 @@ function SceneShell(props: SharedShellProps) {
                       <Icon className="h-4 w-4" />
                     </button>
                   ))}
-                  <div className="flex items-center gap-3 lg:mt-4 lg:flex-col">
+                  </div>
+                  <div className="flex items-center gap-3 lg:mt-6 lg:flex-col lg:gap-4">
                     <div className="flex flex-col items-center rounded-full border border-[#b0bf63]/40 bg-[#11120f] px-2 py-3 text-zinc-100">
                       <div className="text-[14px] font-medium">N</div>
                       <div className="my-2 h-8 w-px bg-zinc-500/40" />
@@ -730,7 +719,7 @@ function OpsWallShell(props: SharedShellProps) {
           </div>
           <UnifiedTopBar {...props} />
           
-          <div className="grid min-h-[calc(100vh-122px)] grid-cols-1 gap-3 p-3 xl:grid-cols-[260px_minmax(0,1fr)_300px]">
+          <div className="grid min-h-[calc(100vh-164px)] grid-cols-1 gap-3 p-3 xl:grid-cols-[260px_minmax(0,1fr)_300px]">
             <div className="space-y-3">
               <TaskQueuePanel tasks={tasks} onSelectTask={onSelectTask} />
               <DossierCard className="p-3">
@@ -763,7 +752,7 @@ function OpsWallShell(props: SharedShellProps) {
               {renderMainSurface()}
             </div>
 
-            <aside className="space-y-3 overflow-auto bg-[#12130f] p-1">
+            <aside className="space-y-3 overflow-auto bg-[#12130f] p-3">
               <SelectedDetailBlock selectedFeature={selectedFeature} comparedIds={comparedIds} onToggleCompare={onToggleCompare} condensed />
 
               <TaskStatusCard task={currentTask} onAssignTask={onAssignTask} onSetTaskStatus={onSetTaskStatus} />
